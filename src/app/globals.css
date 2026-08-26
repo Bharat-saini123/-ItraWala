@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fbf6ec;
+  color: #241813;
+}
+
+::selection {
+  background: #bf9b4f;
+  color: #fbf6ec;
+}
+
+/* Signature arch motif — echoes the brand name "तोरणद्वार" (gateway/archway) */
+.arch {
+  position: relative;
+}
+.arch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px 999px 0 0;
+}
+
+.arch-frame {
+  border-radius: 240px 240px 12px 12px;
+  overflow: hidden;
+}
+
+.divider-arch {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #bf9b4f, transparent);
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid #bf9b4f;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

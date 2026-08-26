@@ -1,0 +1,118 @@
+// Prisma schema for ItraWala (तोरणद्वार)
+// This connects to the Supabase Postgres database. Auth users live in
+// Supabase's built-in `auth.users` table; `Profile` extends that 1:1 with
+// app-specific fields (role, name, addresses).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// Mirrors a row in Supabase auth.users (id is the same UUID).
+model Profile {
+  id        String   @id @db.Uuid
+  email     String   @unique
+  fullName  String?
+  phone     String?
+  role      Role     @default(CUSTOMER)
+  address   String?
+  city      String?
+  state     String?
+  pincode   String?
+  createdAt DateTime @default(now())
+  orders    Order[]
+
+  @@map("profiles")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+
+  @@map("categories")
+}
+
+model Product {
+  id            String      @id @default(uuid())
+  name          String
+  slug          String      @unique
+  description   String
+  shortSummary  String?
+  price         Decimal     @db.Decimal(10, 2)
+  compareAtPrice Decimal?   @db.Decimal(10, 2)
+  sku           String?     @unique
+  stock         Int         @default(0)
+  volumeMl      Int?
+  isVisible     Boolean     @default(true)
+  isFeatured    Boolean     @default(false)
+  images        String[]    @default([])
+  scentNotes    String[]    @default([])
+  categoryId    String?
+  category      Category?   @relation(fields: [categoryId], references: [id])
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @unique
+  profileId       String?     @db.Uuid
+  profile         Profile?    @relation(fields: [profileId], references: [id])
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  shippingAddress String
+  city            String
+  state           String
+  pincode         String
+  status          OrderStatus @default(PENDING)
+  subtotal        Decimal     @db.Decimal(10, 2)
+  shippingFee     Decimal     @db.Decimal(10, 2) @default(0)
+  total           Decimal     @db.Decimal(10, 2)
+  notes           String?
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id])
+  productName String
+  productImage String?
+  unitPrice   Decimal @db.Decimal(10, 2)
+  quantity    Int
+
+  @@map("order_items")
+}
