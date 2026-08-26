@@ -21,7 +21,15 @@ export default function RegisterPage() {
     const { error } = await supabase.auth.signUp({
       email: String(formData.get("email")),
       password: String(formData.get("password")),
-      options: { data: { full_name: String(formData.get("name")) } },
+      options: {
+        data: {
+          full_name: String(formData.get("name")),
+          phone: String(formData.get("phone")),
+          city: String(formData.get("city")),
+          state: String(formData.get("state")),
+          pincode: String(formData.get("pincode")),
+        },
+      },
     });
 
     setLoading(false);
@@ -81,6 +89,44 @@ export default function RegisterPage() {
             type="password"
             required
             minLength={6}
+            className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+          />
+        </label>
+        <label className="block font-body text-xs font-semibold uppercase tracking-wide text-ink/60">
+          Phone
+          <input
+            name="phone"
+            type="tel"
+            required
+            inputMode="tel"
+            className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+          />
+        </label>
+        <label className="block font-body text-xs font-semibold uppercase tracking-wide text-ink/60">
+          City
+          <input
+            name="city"
+            required
+            className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+          />
+        </label>
+        <label className="block font-body text-xs font-semibold uppercase tracking-wide text-ink/60">
+          State
+          <input
+            name="state"
+            required
+            className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+          />
+        </label>
+        <label className="block font-body text-xs font-semibold uppercase tracking-wide text-ink/60">
+          Pincode
+          <input
+            name="pincode"
+            type="text"
+            required
+            inputMode="numeric"
+            pattern="[0-9]{6}"
+            maxLength={6}
             className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
           />
         </label>
