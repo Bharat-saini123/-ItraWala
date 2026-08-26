@@ -41,7 +41,20 @@ export default function ContactForm() {
       <div className="space-y-6">
         <ContactRow icon={<Phone size={18} />} label="Phone" value="+91 98765 43210" />
         <ContactRow icon={<Mail size={18} />} label="Email" value="hello@itrawala.in" />
-        <ContactRow icon={<MapPin size={18} />} label="Workshop" value="Kannauj, Uttar Pradesh, India" />
+        <ContactRow
+          icon={<MapPin size={18} />}
+          label="Visit Us"
+          value={
+            <a
+              href="https://www.google.com/maps/dir/28.039725,76.1010138/Torandwar+itra-wala,+opposite+Polytechnic,+Seka,+Narnaul,+Haryana+123001/@28.0370157,76.0968326,16.45z/am=t/data=!4m10!4m9!1m1!4e1!1m5!1m1!1s0x3912b5ed78ba8365:0x125c3b30524937c3!2m2!1d76.0974958!2d28.0335847!3e0?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noreferrer"
+              className="text-maroon hover:underline"
+            >
+              Opposite Polytechnic, Seka, Narnaul, Haryana - 123001
+            </a>
+          }
+        />
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-gold/20 bg-paper p-6">
@@ -71,7 +84,7 @@ export default function ContactForm() {
   );
 }
 
-function ContactRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function ContactRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-start gap-4 rounded-2xl border border-gold/20 bg-paper p-5">
       <span className="rounded-full bg-maroon/10 p-2.5 text-maroon">{icon}</span>

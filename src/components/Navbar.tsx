@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, ShoppingBag, User } from "lucide-react";
@@ -24,13 +25,15 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-gold/20 bg-ivory/90 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
-        <Link href="/" className="flex flex-col leading-none focus-ring">
-          <span className="font-display text-xl tracking-wide text-maroon md:text-2xl">
-            तोरणद्वार
-          </span>
-          <span className="font-body text-[11px] uppercase tracking-[0.3em] text-gold-dark">
-            ItraWala
-          </span>
+        <Link href="/" className="focus-ring">
+          <Image
+            src="/images/logo.jpg"
+            alt="तोरणद्वार ItraWala"
+            width={180}
+            height={72}
+            className="h-12 w-[150px] object-contain object-left mix-blend-screen drop-shadow-[0_1px_2px_rgba(92,20,32,0.25)] md:h-14 md:w-[200px]"
+            priority
+          />
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">

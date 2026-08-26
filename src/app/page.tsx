@@ -97,7 +97,7 @@ export default async function HomePage() {
             <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">From our shelves to your home</p>
             <h2 className="mt-3 font-display text-3xl text-maroon">A real shop, a personal touch</h2>
             <p className="mt-4 font-body text-base leading-relaxed text-ink/70">
-              Visit us opposite Polytechnic, Seka, Narnaul, or explore our collection online. Every bottle is selected with care by Rajneesh Saini.
+              Visit us at Opposite Polytechnic, Seka, Narnaul, Haryana - 123001, or explore our collection online. Every bottle is selected with care by Rajneesh Saini.
             </p>
             <Link href="/about" className="mt-6 inline-flex w-fit rounded-full bg-maroon px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ivory transition hover:bg-maroon-dark focus-ring">
               Discover our story

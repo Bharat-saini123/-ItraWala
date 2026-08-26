@@ -38,7 +38,7 @@ export default function AboutPage() {
           <div>
             <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">The person behind ItraWala</p>
             <h2 className="mt-2 font-display text-3xl text-maroon">Rajneesh Saini, Owner</h2>
-            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">A personal passion for India&apos;s fragrance traditions, shared from our shop in Narnaul.</p>
+            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">A personal passion for India&apos;s fragrance traditions, shared from our shop at Opposite Polytechnic, Seka, Narnaul, Haryana - 123001.</p>
           </div>
         </div>
 

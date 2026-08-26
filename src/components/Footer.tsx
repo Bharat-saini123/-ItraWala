@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Instagram, Facebook, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
+import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { ArchDivider } from "./ArchDivider";
 
 export function Footer() {
@@ -9,10 +10,13 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand */}
           <div>
-            <p className="font-display text-2xl text-gold-light">तोरणद्वार</p>
-            <p className="mb-4 font-body text-xs uppercase tracking-[0.3em] text-ivory/70">
-              ItraWala
-            </p>
+            <Image
+              src="/images/logo.jpg"
+              alt="तोरणद्वार ItraWala"
+              width={200}
+              height={80}
+              className="mb-4 h-16 w-[200px] object-contain object-left mix-blend-screen"
+            />
             <p className="max-w-xs font-body text-sm leading-relaxed text-ivory/70">
               Traditional attars, oudh and bakhoor, sourced and blended with the
               same care as a hundred years ago — brought to your door.
@@ -65,7 +69,7 @@ export function Footer() {
             <ul className="mb-5 space-y-2 font-body text-sm text-ivory/75">
               <li className="flex items-center gap-2"><Phone size={15} /> <a href="tel:+919614148000" className="hover:text-gold-light">9614148000</a></li>
               <li className="flex items-center gap-2"><Mail size={15} /> hello@itrawala.in</li>
-              <li className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0" /> Opposite Polytechnic, Seka, Narnaul - 123001</li>
+              <li className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0" /> <a href="https://www.google.com/maps/dir/28.039725,76.1010138/Torandwar+itra-wala,+opposite+Polytechnic,+Seka,+Narnaul,+Haryana+123001/@28.0370157,76.0968326,16.45z/am=t/data=!4m10!4m9!1m1!4e1!1m5!1m1!1s0x3912b5ed78ba8365:0x125c3b30524937c3!2m2!1d76.0974958!2d28.0335847!3e0?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1 hover:text-gold-light">Opposite Polytechnic, Seka, Narnaul, Haryana - 123001 <ArrowUpRight size={13} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a></li>
               <li className="text-xs text-ivory/55">Open 9 AM - 9 PM, Mon-Sun</li>
               <li className="text-xs text-gold-light">Owner: Rajneesh Saini</li>
             </ul>
