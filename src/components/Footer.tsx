@@ -18,7 +18,7 @@ export function Footer() {
               same care as a hundred years ago — brought to your door.
             </p>
             <div className="mt-5 flex gap-4">
-              <a href="#" aria-label="Instagram" className="text-ivory/70 hover:text-gold-light">
+              <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-ivory/70 hover:text-gold-light">
                 <Instagram size={19} />
               </a>
               <a href="#" aria-label="Facebook" className="text-ivory/70 hover:text-gold-light">
@@ -63,9 +63,11 @@ export function Footer() {
               Stay In Touch
             </h3>
             <ul className="mb-5 space-y-2 font-body text-sm text-ivory/75">
-              <li className="flex items-center gap-2"><Phone size={15} /> +91 98765 43210</li>
+              <li className="flex items-center gap-2"><Phone size={15} /> <a href="tel:+919614148000" className="hover:text-gold-light">9614148000</a></li>
               <li className="flex items-center gap-2"><Mail size={15} /> hello@itrawala.in</li>
-              <li className="flex items-center gap-2"><MapPin size={15} /> Kannauj, Uttar Pradesh, India</li>
+              <li className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0" /> Opposite Polytechnic, Seka, Narnaul - 123001</li>
+              <li className="text-xs text-ivory/55">Open 9 AM - 9 PM, Mon-Sun</li>
+              <li className="text-xs text-gold-light">Owner: Rajneesh Saini</li>
             </ul>
             <form className="flex overflow-hidden rounded-full border border-gold/40">
               <input
@@ -86,7 +88,7 @@ export function Footer() {
         <ArchDivider className="my-10 opacity-60" />
 
         <div className="flex flex-col items-center justify-between gap-3 font-body text-xs text-ivory/60 md:flex-row">
-          <p>&copy; {new Date().getFullYear()} तोरणद्वार ItraWala. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} तोरणद्वार ItraWala. Owner: Rajneesh Saini.</p>
           <div className="flex gap-5">
             <Link href="/about" className="hover:text-gold-light">Privacy Policy</Link>
             <Link href="/about" className="hover:text-gold-light">Terms of Service</Link>

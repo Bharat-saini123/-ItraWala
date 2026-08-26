@@ -23,14 +23,25 @@ export default function AboutPage() {
 
       <div className="relative mx-auto aspect-[16/7] max-w-6xl overflow-hidden rounded-3xl px-5 md:px-8">
         <Image
-          src="https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=1400"
-          alt="Traditional attar distillation"
+          src="/images/shop.jpg"
+          alt="The ItraWala shop and its attar collection"
           fill
           className="rounded-3xl object-cover"
         />
       </div>
 
       <section className="mx-auto max-w-4xl px-5 py-16 md:px-8">
+        <div className="mb-16 grid gap-8 sm:grid-cols-[180px_1fr] sm:items-center">
+          <div className="relative mx-auto aspect-square w-44 overflow-hidden rounded-full border-4 border-gold/30">
+            <Image src="/images/owner.jpg" alt="Rajneesh Saini, owner of ItraWala" fill sizes="176px" className="object-cover" />
+          </div>
+          <div>
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">The person behind ItraWala</p>
+            <h2 className="mt-2 font-display text-3xl text-maroon">Rajneesh Saini, Owner</h2>
+            <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">A personal passion for India&apos;s fragrance traditions, shared from our shop in Narnaul.</p>
+          </div>
+        </div>
+
         <div className="grid gap-10 sm:grid-cols-2">
           <div>
             <h2 className="font-display text-2xl text-maroon">Rooted in Kannauj</h2>
@@ -67,6 +78,23 @@ export default function AboutPage() {
               </p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-16">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">Inside ItraWala</p>
+              <h2 className="mt-2 font-display text-3xl text-maroon">Our fragrance collection</h2>
+            </div>
+            <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" className="font-body text-sm font-semibold text-maroon hover:underline">Instagram</a>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg", "image6.jpg", "image7.jpg", "image8.jpg", "image10.jpg", "image11.jpg", "image12.webp", "image13.webp"].map((image, index) => (
+              <div key={image} className={`relative overflow-hidden rounded-xl bg-paper ${index === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}>
+                <Image src={`/images/${image}`} alt={`ItraWala fragrance collection ${index + 1}`} fill sizes="(min-width: 768px) 200px, 50vw" className="object-cover transition duration-500 hover:scale-105" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>

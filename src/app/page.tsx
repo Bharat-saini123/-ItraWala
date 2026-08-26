@@ -65,14 +65,43 @@ export default async function HomePage() {
           <div className="order-1 md:order-2">
             <div className="arch-frame relative mx-auto aspect-[3/4] w-full max-w-md">
               <Image
-                src="https://images.unsplash.com/photo-1615368144592-05b3d6d4d5c3?w=900"
-                alt="Attar bottles arranged on a tray"
+                src="/images/shop.jpg"
+                alt="तोरणद्वार ItraWala shop filled with attar bottles"
                 fill
                 sizes="(min-width: 768px) 420px, 90vw"
                 className="object-cover"
                 priority
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The people and place behind the fragrance */}
+      <section className="mx-auto max-w-7xl px-5 py-16 md:px-8">
+        <div className="grid gap-8 md:grid-cols-[1.15fr_0.85fr] md:items-stretch">
+          <div className="relative min-h-[360px] overflow-hidden rounded-2xl bg-maroon">
+            <Image
+              src="/images/owner.jpg"
+              alt="Rajneesh Saini at the ItraWala shop"
+              fill
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-maroon/90 to-transparent p-6 pt-20">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-light">Meet the owner</p>
+              <p className="mt-1 font-display text-2xl text-ivory">Rajneesh Saini</p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-center rounded-2xl border border-gold/20 bg-paper p-8">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">From our shelves to your home</p>
+            <h2 className="mt-3 font-display text-3xl text-maroon">A real shop, a personal touch</h2>
+            <p className="mt-4 font-body text-base leading-relaxed text-ink/70">
+              Visit us opposite Polytechnic, Seka, Narnaul, or explore our collection online. Every bottle is selected with care by Rajneesh Saini.
+            </p>
+            <Link href="/about" className="mt-6 inline-flex w-fit rounded-full bg-maroon px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ivory transition hover:bg-maroon-dark focus-ring">
+              Discover our story
+            </Link>
           </div>
         </div>
       </section>
