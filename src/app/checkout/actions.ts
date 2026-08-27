@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { generateOrderNumber } from "@/lib/utils";
+import { sendOrderCreatedEmail } from "@/lib/email";
 
 export type CheckoutItem = {
   productId: string;
@@ -89,6 +90,14 @@ export async function placeOrder(input: CheckoutInput) {
     }
 
     return created;
+  });
+
+  await sendOrderCreatedEmail({
+    orderNumber: order.orderNumber,
+    customerName: order.customerName,
+    customerEmail: order.customerEmail,
+    total: Number(order.total),
+    status: order.status,
   });
 
   return { success: true, orderNumber: order.orderNumber, orderId: order.id };

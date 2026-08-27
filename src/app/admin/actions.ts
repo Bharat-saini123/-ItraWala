@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/utils";
+import { sendOrderStatusEmail } from "@/lib/email";
 import type { OrderStatus } from "@prisma/client";
 
 async function assertAdmin() {
@@ -88,7 +89,19 @@ export async function updateStock(id: string, stock: number) {
 
 export async function updateOrderStatus(id: string, status: OrderStatus) {
   await assertAdmin();
-  await prisma.order.update({ where: { id }, data: { status } });
+  const order = await prisma.order.findUnique({ where: { id } });
+  if (!order) throw new Error("Order not found");
+
+  if (order.status !== status) {
+    const updatedOrder = await prisma.order.update({ where: { id }, data: { status } });
+    await sendOrderStatusEmail({
+      orderNumber: updatedOrder.orderNumber,
+      customerName: updatedOrder.customerName,
+      customerEmail: updatedOrder.customerEmail,
+      total: Number(updatedOrder.total),
+      status: updatedOrder.status,
+    });
+  }
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${id}`);
 }
