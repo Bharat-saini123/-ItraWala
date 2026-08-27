@@ -97,7 +97,7 @@ async function sendOrderEmail(order: OrderEmail, subject: string, message: strin
             </table>
           </td></tr>
           <tr><td style="padding:28px 32px 34px;color:#766a63;font-size:13px;line-height:1.7;">
-            We will keep you updated as your order moves through each stage. For help, reply to this email or contact <a href="mailto:hello@itrawala.in" style="color:#5c1a28;font-weight:bold;text-decoration:none;">hello@itrawala.in</a>.
+            We will keep you updated as your order moves through each stage. For help, reply to this email or contact <a href="mailto:${adminEmail}" style="color:#5c1a28;font-weight:bold;text-decoration:none;">${adminEmail}</a>.
           </td></tr>
           <tr><td style="padding:18px 32px;background:#5c1a28;color:#f6efe3;text-align:center;font-size:12px;line-height:1.6;">
             Crafted with care in Narnaul, Haryana<br /><span style="color:#e4c77e;">ItraWala &middot; Traditional fragrance, thoughtfully delivered</span>
@@ -114,7 +114,7 @@ async function sendOrderEmail(order: OrderEmail, subject: string, message: strin
       to: order.customerEmail,
       ...(adminCopy ? { bcc: adminCopy } : {}),
       subject,
-      text: `${subject}\n\nHello ${order.customerName},\n\n${message}\n\nOrder #${order.orderNumber}\nStatus: ${statusLabel}\nTotal: ${formattedTotal}\n\nItraWala | hello@itrawala.in`,
+      text: `${subject}\n\nHello ${order.customerName},\n\n${message}\n\nOrder #${order.orderNumber}\nStatus: ${statusLabel}\nTotal: ${formattedTotal}\n\nItraWala | ${adminEmail}`,
       html,
     });
   } catch (error) {

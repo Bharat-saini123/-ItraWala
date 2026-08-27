@@ -8,7 +8,7 @@ interface Message {
   content: string;
 }
 
-export function ChatBot() {
+export function ChatBot({ adminEmail }: { adminEmail: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -66,7 +66,7 @@ export function ChatBot() {
           role: "assistant",
           content: msg.includes("API key")
             ? "⚙️ Chatbot abhi setup ho raha hai. Kripya +91 96141 48000 pe call karein."
-            : "Sorry, kuch problem aayi. Please +91 96141 48000 pe call karein ya hello@itrawala.in pe email karein.",
+            : `Sorry, kuch problem aayi. Please +91 96141 48000 pe call karein ya ${adminEmail} pe email karein.`,
         },
       ]);
     } finally {

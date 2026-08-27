@@ -3,7 +3,7 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
 
-export default function ContactForm() {
+export default function ContactForm({ adminEmail }: { adminEmail: string }) {
   const [status, setStatus] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -29,7 +29,7 @@ export default function ContactForm() {
       message,
     ].join("\n");
 
-    const mailtoLink = `mailto:hello@itrawala.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailtoBody)}`;
+    const mailtoLink = `mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailtoBody)}`;
 
     setStatus("Opening your email app with your message. Please send it to complete the contact form.");
     window.location.href = mailtoLink;
@@ -40,7 +40,7 @@ export default function ContactForm() {
     <div className="mt-14 grid gap-10 md:grid-cols-[1fr_1.2fr]">
       <div className="space-y-6">
         <ContactRow icon={<Phone size={18} />} label="Phone" value="+91 96141 48000" />
-        <ContactRow icon={<Mail size={18} />} label="Email" value="hello@itrawala.in" />
+        <ContactRow icon={<Mail size={18} />} label="Email" value={adminEmail} />
         <ContactRow
           icon={<MapPin size={18} />}
           label="Visit Us"

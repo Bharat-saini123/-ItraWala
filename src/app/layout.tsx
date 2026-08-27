@@ -24,13 +24,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const adminEmail = process.env.ADMIN_EMAIL ?? "";
+
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
         <Navbar />
         <main className="min-h-[60vh]">{children}</main>
-        <Footer />
-        <ChatBot />
+        <Footer adminEmail={adminEmail} />
+        <ChatBot adminEmail={adminEmail} />
       </body>
     </html>
   );

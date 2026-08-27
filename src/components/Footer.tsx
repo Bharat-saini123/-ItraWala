@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { ArchDivider } from "./ArchDivider";
 
-export function Footer() {
+export function Footer({ adminEmail }: { adminEmail: string }) {
   return (
     <footer className="mt-24 bg-maroon text-ivory">
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
@@ -68,7 +68,7 @@ export function Footer() {
             </h3>
             <ul className="mb-5 space-y-2 font-body text-sm text-ivory/75">
               <li className="flex items-center gap-2"><Phone size={15} /> <a href="tel:+919614148000" className="hover:text-gold-light">9614148000</a></li>
-              <li className="flex items-center gap-2"><Mail size={15} /> hello@itrawala.in</li>
+              <li className="flex items-center gap-2"><Mail size={15} /> <a href={`mailto:${adminEmail}`} className="hover:text-gold-light">{adminEmail}</a></li>
               <li className="flex items-start gap-2"><MapPin size={15} className="mt-0.5 shrink-0" /> <a href="https://www.google.com/maps/dir/28.039725,76.1010138/Torandwar+itra-wala,+opposite+Polytechnic,+Seka,+Narnaul,+Haryana+123001/@28.0370157,76.0968326,16.45z/am=t/data=!4m10!4m9!1m1!4e1!1m5!1m1!1s0x3912b5ed78ba8365:0x125c3b30524937c3!2m2!1d76.0974958!2d28.0335847!3e0?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" className="group inline-flex items-center gap-1 hover:text-gold-light">Opposite Polytechnic, Seka, Narnaul, Haryana - 123001 <ArrowUpRight size={13} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></a></li>
               <li className="text-xs text-ivory/55">Open 9 AM - 9 PM, Mon-Sun</li>
               <li className="text-xs text-gold-light">Owner: Rajneesh Saini</li>

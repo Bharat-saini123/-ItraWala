@@ -16,7 +16,7 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <ContactForm />
+      <ContactForm adminEmail={process.env.ADMIN_EMAIL ?? ""} />
     </div>
   );
 }
