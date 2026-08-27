@@ -1,13 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { createClient } from "@supabase/supabase-js";
 
-// This route uses the SERVICE_ROLE_KEY so it bypasses RLS and can
-// upload to the "products" bucket without the admin auth session
-// being fully propagated to the Storage API.
+const BUCKET = "products";
+
+// Build an admin Supabase client using the service-role key.
+// This bypasses RLS so uploads always work once the bucket exists.
+function getAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  return createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
-    // Verify the caller is an admin using the normal (anon-key) session
+    // ── 1. Auth check: only admins can upload ─────────────────────────────
     const cookieStore = await cookies();
     const supabaseAuth = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,10 +41,9 @@ export async function POST(req: NextRequest) {
     } = await supabaseAuth.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized – please log in" }, { status: 401 });
     }
 
-    // Check admin role from profiles table
     const { data: profile } = await supabaseAuth
       .from("profiles")
       .select("role")
@@ -42,39 +51,52 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (!profile || profile.role !== "ADMIN") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden – admins only" }, { status: 403 });
     }
 
-    // Now use the service role client to do the actual upload
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
+    // ── 2. Parse file ─────────────────────────────────────────────────────
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
-
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       return NextResponse.json({ error: "Only image files are allowed" }, { status: 400 });
     }
-
-    // Validate file size (max 5 MB)
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: "File too large (max 5 MB)" }, { status: 400 });
     }
 
-    const ext = file.name.split(".").pop();
+    // ── 3. Upload using admin client (bypasses RLS) ───────────────────────
+    const supabaseAdmin = getAdminClient();
+
+    // Ensure bucket exists (creates it if missing — useful on first deploy)
+    const { data: buckets } = await supabaseAdmin.storage.listBuckets();
+    const bucketExists = buckets?.some((b) => b.id === BUCKET);
+    if (!bucketExists) {
+      const { error: createErr } = await supabaseAdmin.storage.createBucket(BUCKET, {
+        public: true,
+        allowedMimeTypes: ["image/*"],
+        fileSizeLimit: 5 * 1024 * 1024,
+      });
+      if (createErr) {
+        console.error("[upload] Could not create bucket:", createErr);
+        return NextResponse.json(
+          {
+            error: `Storage bucket "${BUCKET}" not found and could not be created. Check your SUPABASE_SERVICE_ROLE_KEY in .env — it must be the secret service_role key, NOT the anon key.`,
+          },
+          { status: 500 }
+        );
+      }
+    }
+
+    const ext = file.name.split(".").pop() ?? "jpg";
     const path = `products/${crypto.randomUUID()}.${ext}`;
     const arrayBuffer = await file.arrayBuffer();
 
     const { error: uploadError } = await supabaseAdmin.storage
-      .from("products")
+      .from(BUCKET)
       .upload(path, arrayBuffer, {
         contentType: file.type,
         cacheControl: "3600",
@@ -82,11 +104,11 @@ export async function POST(req: NextRequest) {
       });
 
     if (uploadError) {
-      console.error("[upload] Supabase error:", uploadError);
+      console.error("[upload] Supabase upload error:", uploadError);
       return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
-    const { data } = supabaseAdmin.storage.from("products").getPublicUrl(path);
+    const { data } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(path);
     return NextResponse.json({ url: data.publicUrl });
   } catch (err) {
     console.error("[upload] Unexpected error:", err);
