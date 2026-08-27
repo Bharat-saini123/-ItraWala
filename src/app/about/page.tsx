@@ -1,16 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArchDivider } from "@/components/ArchDivider";
 import { ReviewForm, ReviewList } from "@/components/Reviews";
 import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Our Story — ItraWala" };
 
 export default async function AboutPage() {
-  const reviews = await prisma.review.findMany({
-    where: { isApproved: true },
-    orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, rating: true, comment: true },
-  });
+  const supabase = createClient();
+  const [{ data: { user } }, reviews] = await Promise.all([
+    supabase.auth.getUser(),
+    prisma.review.findMany({
+      where: { isApproved: true },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true, rating: true, comment: true },
+    }),
+  ]);
 
   return (
     <div>
@@ -85,7 +91,16 @@ export default async function AboutPage() {
           </div>
           {reviews.length > 0 && <ReviewList reviews={reviews} />}
           <div className="mt-8">
-            <ReviewForm />
+            {user ? (
+              <ReviewForm />
+            ) : (
+              <div className="rounded-2xl border border-gold/20 bg-paper p-6 text-center">
+                <p className="font-body text-sm text-ink/70">Sign in to share your fragrance experience.</p>
+                <Link href="/login?next=/about" className="mt-4 inline-block rounded-full bg-maroon px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ivory hover:bg-maroon-dark">
+                  Sign in to write a review
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
