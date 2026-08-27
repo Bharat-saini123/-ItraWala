@@ -94,9 +94,10 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-3 font-body text-xs text-ivory/60 md:flex-row">
           <p>&copy; {new Date().getFullYear()} तोरणद्वार ItraWala. Owner: Rajneesh Saini.</p>
           <div className="flex gap-5">
-            <Link href="/about" className="hover:text-gold-light">Privacy Policy</Link>
-            <Link href="/about" className="hover:text-gold-light">Terms of Service</Link>
-            <Link href="/about" className="hover:text-gold-light">Shipping &amp; Returns</Link>
+            <Link href="/privacy-policy" className="hover:text-gold-light">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gold-light">Terms of Service</Link>
+            <Link href="/shipping" className="hover:text-gold-light">Shipping</Link>
+            <Link href="/returns" className="hover:text-gold-light">Returns</Link>
           </div>
         </div>
       </div>
