@@ -10,16 +10,38 @@ const STATUS_STYLES: Record<string, string> = {
   CANCELLED: "bg-terracotta/15 text-terracotta",
 };
 
-export default async function AdminOrdersPage() {
+export default async function AdminOrdersPage({
+  searchParams,
+}: {
+  searchParams: { status?: string };
+}) {
+  const status = searchParams.status;
   const orders = await prisma.order.findMany({
+    where: status === "PENDING" ? { status: "PENDING" } : undefined,
     orderBy: { createdAt: "desc" },
     include: { items: true },
   });
 
   return (
     <div>
-      <h1 className="font-display text-2xl text-ink">Orders</h1>
-      <p className="mt-1 font-body text-sm text-ink/60">{orders.length} total orders</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-display text-2xl text-ink">
+            {status === "PENDING" ? "Pending Orders" : "Orders"}
+          </h1>
+          <p className="mt-1 font-body text-sm text-ink/60">
+            {orders.length} {status === "PENDING" ? "pending" : "total"} order{orders.length === 1 ? "" : "s"}
+          </p>
+        </div>
+        {status === "PENDING" && (
+          <Link
+            href="/admin/orders"
+            className="rounded-full border border-maroon/40 px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-wide text-maroon hover:bg-maroon/5"
+          >
+            Clear Filter
+          </Link>
+        )}
+      </div>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-gold/20 bg-paper">
         <table className="w-full text-left">

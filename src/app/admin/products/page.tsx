@@ -7,27 +7,57 @@ import { StockEditor } from "@/components/admin/StockEditor";
 import { VisibilityToggle } from "@/components/admin/VisibilityToggle";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({
+  searchParams,
+}: {
+  searchParams: { filter?: string };
+}) {
+  const filter = searchParams.filter;
+  const where =
+    filter === "hidden"
+      ? { isVisible: false }
+      : filter === "low-stock"
+        ? { stock: { lte: 5 } }
+        : undefined;
+
   const products = await prisma.product.findMany({
+    where,
     include: { category: true },
     orderBy: { createdAt: "desc" },
   });
+
+  const heading =
+    filter === "hidden"
+      ? "Hidden Products"
+      : filter === "low-stock"
+        ? "Low Stock Products"
+        : "Products";
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl text-ink">Products</h1>
+          <h1 className="font-display text-2xl text-ink">{heading}</h1>
           <p className="mt-1 font-body text-sm text-ink/60">
-            Toggle visibility, edit stock, or open a product to edit full details.
+            {products.length} product{products.length === 1 ? "" : "s"} shown. Toggle visibility, edit stock, or open a product to edit full details.
           </p>
         </div>
-        <Link
-          href="/admin/products/new"
-          className="flex items-center gap-2 rounded-full bg-maroon px-5 py-2.5 font-body text-sm font-semibold text-ivory hover:bg-maroon-dark"
-        >
-          <Plus size={16} /> New Product
-        </Link>
+        <div className="flex items-center gap-3">
+          {filter && filter !== "all" && (
+            <Link
+              href="/admin/products"
+              className="rounded-full border border-maroon/40 px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-wide text-maroon hover:bg-maroon/5"
+            >
+              Clear Filter
+            </Link>
+          )}
+          <Link
+            href="/admin/products/new"
+            className="flex items-center gap-2 rounded-full bg-maroon px-5 py-2.5 font-body text-sm font-semibold text-ivory hover:bg-maroon-dark"
+          >
+            <Plus size={16} /> New Product
+          </Link>
+        </div>
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-gold/20 bg-paper">

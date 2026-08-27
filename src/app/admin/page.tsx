@@ -17,10 +17,10 @@ export default async function AdminDashboard() {
   const pendingOrders = orders.filter((o) => o.status === "PENDING").length;
 
   const stats = [
-    { label: "Total Products", value: productCount, href: "/admin/products" },
-    { label: "Hidden Products", value: hiddenCount, href: "/admin/products" },
-    { label: "Low Stock (≤5)", value: lowStockCount, href: "/admin/products" },
-    { label: "Pending Orders", value: pendingOrders, href: "/admin/orders" },
+    { label: "Total Products", value: productCount, href: "/admin/products?filter=all" },
+    { label: "Hidden Products", value: hiddenCount, href: "/admin/products?filter=hidden" },
+    { label: "Low Stock (≤5)", value: lowStockCount, href: "/admin/products?filter=low-stock" },
+    { label: "Pending Orders", value: pendingOrders, href: "/admin/orders?status=PENDING" },
   ];
 
   return (
