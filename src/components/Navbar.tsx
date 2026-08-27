@@ -23,7 +23,7 @@ export function Navbar() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gold/20 bg-ivory/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-gold/30 bg-maroon text-ivory shadow-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
         <Link href="/" className="focus-ring">
           <Image
@@ -31,7 +31,7 @@ export function Navbar() {
             alt="तोरणद्वार ItraWala"
             width={180}
             height={72}
-            className="h-12 w-[150px] object-contain object-left mix-blend-screen drop-shadow-[0_1px_2px_rgba(92,20,32,0.25)] md:h-14 md:w-[200px]"
+            className="h-12 w-[150px] object-contain object-left mix-blend-screen md:h-14 md:w-[200px]"
             priority
           />
         </Link>
@@ -41,7 +41,7 @@ export function Navbar() {
             <li key={link.label}>
               <Link
                 href={link.href}
-                className="font-body text-sm uppercase tracking-wider text-ink/80 transition hover:text-maroon focus-ring"
+                className="font-body text-sm uppercase tracking-wider text-ivory/85 transition hover:text-gold-light focus-ring"
               >
                 {link.label}
               </Link>
@@ -50,10 +50,10 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4">
-          <Link href="/account" aria-label="Account" className="hidden text-ink/80 hover:text-maroon md:block focus-ring">
+          <Link href="/account" aria-label="Account" className="hidden text-ivory/85 hover:text-gold-light md:block focus-ring">
             <User size={20} />
           </Link>
-          <Link href="/cart" aria-label="Cart" className="relative text-ink/80 hover:text-maroon focus-ring">
+          <Link href="/cart" aria-label="Cart" className="relative text-ivory/85 hover:text-gold-light focus-ring">
             <ShoppingBag size={22} />
             {totalItems > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-maroon text-[11px] font-semibold text-ivory">
@@ -62,7 +62,7 @@ export function Navbar() {
             )}
           </Link>
           <button
-            className="text-ink md:hidden focus-ring"
+            className="text-ivory md:hidden focus-ring"
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
           >
@@ -72,20 +72,20 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-gold/20 bg-ivory md:hidden">
+        <div className="border-t border-gold/30 bg-maroon md:hidden">
           <ul className="flex flex-col gap-1 px-5 py-4">
             {NAV_LINKS.map((link) => (
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  className="block py-2 font-body text-sm uppercase tracking-wider text-ink/80 hover:text-maroon"
+                  className="block py-2 font-body text-sm uppercase tracking-wider text-ivory/85 hover:text-gold-light"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href="/account" className="block py-2 font-body text-sm uppercase tracking-wider text-ink/80 hover:text-maroon">
+              <Link href="/account" className="block py-2 font-body text-sm uppercase tracking-wider text-ivory/85 hover:text-gold-light">
                 Account
               </Link>
             </li>
