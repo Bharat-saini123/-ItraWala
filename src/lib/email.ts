@@ -48,6 +48,40 @@ export async function sendOrderCreatedEmail(order: OrderEmail) {
   );
 }
 
+type ContactMessage = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
+
+export async function sendContactFormEmail(contactData: ContactMessage) {
+  const transporter = getTransporter();
+  if (!transporter) return;
+
+  const adminMessage = `
+    <h2>नया संदेश प्राप्त हुआ (New Contact Form Submission)</h2>
+    <p><strong>नाम (Name):</strong> ${escapeHtml(contactData.name)}</p>
+    <p><strong>Email:</strong> ${escapeHtml(contactData.email)}</p>
+    <p><strong>विषय (Subject):</strong> ${escapeHtml(contactData.subject)}</p>
+    <hr />
+    <p><strong>संदेश (Message):</strong></p>
+    <p>${escapeHtml(contactData.message).replace(/\n/g, "<br />")}</p>
+  `;
+
+  try {
+    await transporter.sendMail({
+      from: senderEmail,
+      to: adminEmail,
+      subject: `[Contact Form] ${contactData.subject}`,
+      html: adminMessage,
+    });
+  } catch (error) {
+    console.error("Failed to send contact form email to admin:", error);
+    throw new Error("Failed to send email notification");
+  }
+}
+
 export async function sendOrderStatusEmail(order: OrderEmail) {
   await sendOrderEmail(
     order,

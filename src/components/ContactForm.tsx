@@ -5,9 +5,12 @@ import { useState } from "react";
 
 export default function ContactForm({ adminEmail }: { adminEmail: string }) {
   const [status, setStatus] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true);
+    setStatus(null);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -18,22 +21,38 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
 
     if (!name || !email || !subject || !message) {
       setStatus("Please fill in all fields before sending your message.");
+      setIsLoading(false);
       return;
     }
 
-    const mailtoBody = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      "",
-      "Message:",
-      message,
-    ].join("\n");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message,
+        }),
+      });
 
-    const mailtoLink = `mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailtoBody)}`;
+      const data = await response.json();
 
-    setStatus("Opening your email app with your message. Please send it to complete the contact form.");
-    window.location.href = mailtoLink;
-    form.reset();
+      if (response.ok) {
+        setStatus("✅ Message sent successfully! We'll get back to you soon.");
+        form.reset();
+      } else {
+        setStatus(`❌ Error: ${data.error || "Failed to send message"}`);
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("❌ Failed to send message. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -74,11 +93,16 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
         </label>
         <button
           type="submit"
-          className="rounded-full bg-maroon px-8 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ivory hover:bg-maroon-dark"
+          disabled={isLoading}
+          className="rounded-full bg-maroon px-8 py-3 font-body text-sm font-semibold uppercase tracking-wider text-ivory hover:bg-maroon-dark disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Send Message
+          {isLoading ? "Sending..." : "Send Message"}
         </button>
-        {status ? <p className="font-body text-sm text-maroon-dark">{status}</p> : null}
+        {status && (
+          <div className={`rounded-lg p-3 font-body text-sm ${status.includes("✅") ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"}`}>
+            {status}
+          </div>
+        )}
       </form>
     </div>
   );
