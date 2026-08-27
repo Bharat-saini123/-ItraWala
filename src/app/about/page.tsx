@@ -1,9 +1,17 @@
 import Image from "next/image";
 import { ArchDivider } from "@/components/ArchDivider";
+import { ReviewForm, ReviewList } from "@/components/Reviews";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = { title: "Our Story — ItraWala" };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const reviews = await prisma.review.findMany({
+    where: { isApproved: true },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, name: true, rating: true, comment: true },
+  });
+
   return (
     <div>
       <section className="mx-auto max-w-5xl px-5 py-16 text-center md:px-8">
@@ -39,6 +47,11 @@ export default function AboutPage() {
             <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">The person behind ItraWala</p>
             <h2 className="mt-2 font-display text-3xl text-maroon">Rajneesh Saini, Owner</h2>
             <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">A personal passion for India&apos;s fragrance traditions, shared from our shop at Opposite Polytechnic, Seka, Narnaul, Haryana - 123001.</p>
+            <p className="mt-4 font-body text-sm leading-relaxed text-ink/70">
+              खाटू श्याम बाबा के प्रति अपनी श्रद्धा के रूप में, राजनेश जी बाबा के
+              लिए इत्र भी भेजते हैं। सुगंध और भक्ति से जुड़ा यह भाव ItraWala की
+              यात्रा का एक खास हिस्सा है।
+            </p>
           </div>
         </div>
 
@@ -64,6 +77,17 @@ export default function AboutPage() {
         </div>
 
         <ArchDivider className="my-14" />
+
+        <div className="mt-16">
+          <div className="mb-6">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">From our customers</p>
+            <h2 className="mt-2 font-display text-3xl text-maroon">Fragrance stories</h2>
+          </div>
+          {reviews.length > 0 && <ReviewList reviews={reviews} />}
+          <div className="mt-8">
+            <ReviewForm />
+          </div>
+        </div>
 
         <div className="grid gap-10 text-center sm:grid-cols-3">
           {[

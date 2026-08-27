@@ -39,6 +39,7 @@ model Profile {
   pincode   String?
   createdAt DateTime @default(now())
   orders    Order[]
+  reviews   Review[]
 
   @@map("profiles")
 }
@@ -127,4 +128,18 @@ model Message {
   isRead    Boolean  @default(false)
 
   @@map("messages")
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  profileId  String?  @db.Uuid
+  profile    Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  name       String
+  rating     Int
+  comment    String
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([isApproved, createdAt])
+  @@map("reviews")
 }

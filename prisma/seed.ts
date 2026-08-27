@@ -191,7 +191,22 @@ async function main() {
     });
   }
 
-  console.log(`Seeded ${categories.length} categories and ${products.length} products.`);
+  console.log("Seeding customer reviews...");
+  const reviews = [
+    { name: "Amit Sharma", rating: 5, comment: "Mysore Chandan Attar ki khushboo bahut shaant aur long-lasting hai. Packaging bhi bahut achhi thi." },
+    { name: "Neha Verma", rating: 5, comment: "Gulab-e-Kannauj ki natural fragrance dil jeet leti hai. ItraWala se dobara zaroor order karungi." },
+    { name: "Rohit Yadav", rating: 4, comment: "Oudh Al Sharq ki khushboo rich aur premium hai. Delivery bhi time par mil gayi." },
+    { name: "Pooja Saini", rating: 5, comment: "Gift set sundar tha aur fragrances ka selection bahut accha laga. Family ko bhi pasand aaya." },
+    { name: "Vikas Gupta", rating: 5, comment: "Mitti Attar mein pehli baarish wali asli khushboo milti hai. Quality ke liye shukriya." },
+    { name: "Kavita Rao", rating: 4, comment: "Bakhoor ki fragrance ghar mein bahut der tak rahi. Product bilkul description jaisa mila." },
+  ];
+
+  for (const review of reviews) {
+    const existing = await prisma.review.findFirst({ where: { name: review.name } });
+    if (!existing) await prisma.review.create({ data: { ...review, isApproved: true } });
+  }
+
+  console.log(`Seeded ${categories.length} categories, ${products.length} products and ${reviews.length} reviews.`);
 }
 
 main()
