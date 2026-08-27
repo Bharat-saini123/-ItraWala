@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Upload, X, Loader2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 
 export function ImageUploader({
   images,
@@ -20,22 +19,25 @@ export function ImageUploader({
     if (!files || files.length === 0) return;
     setUploading(true);
     setError(null);
-    const supabase = createClient();
     const uploaded: string[] = [];
 
     for (const file of Array.from(files)) {
-      const ext = file.name.split(".").pop();
-      const path = `products/${crypto.randomUUID()}.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from("products")
-        .upload(path, file, { cacheControl: "3600", upsert: false });
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (uploadError) {
-        setError(uploadError.message);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? `Upload failed (${res.status})`);
         continue;
       }
-      const { data } = supabase.storage.from("products").getPublicUrl(path);
-      uploaded.push(data.publicUrl);
+
+      const { url } = await res.json();
+      uploaded.push(url);
     }
 
     onChange([...images, ...uploaded]);
@@ -80,8 +82,7 @@ export function ImageUploader({
       </div>
       {error && <p className="mt-2 font-body text-xs text-terracotta">{error}</p>}
       <p className="mt-2 font-body text-xs text-ink/45">
-        Uploads go to your Supabase &ldquo;products&rdquo; storage bucket. You can also paste an
-        image URL below instead.
+        Max 5 MB per image. You can also paste an image URL below.
       </p>
       <div className="mt-2 flex gap-2">
         <input

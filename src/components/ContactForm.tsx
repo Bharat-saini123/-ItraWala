@@ -39,7 +39,7 @@ export default function ContactForm() {
   return (
     <div className="mt-14 grid gap-10 md:grid-cols-[1fr_1.2fr]">
       <div className="space-y-6">
-        <ContactRow icon={<Phone size={18} />} label="Phone" value="+91 98765 43210" />
+        <ContactRow icon={<Phone size={18} />} label="Phone" value="+91 96141 48000" />
         <ContactRow icon={<Mail size={18} />} label="Email" value="hello@itrawala.in" />
         <ContactRow
           icon={<MapPin size={18} />}

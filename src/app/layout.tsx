@@ -3,6 +3,7 @@ import { Playfair_Display, Karla } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { ChatBot } from "@/components/ChatBot";
 
 const display = Playfair_Display({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="min-h-[60vh]">{children}</main>
         <Footer />
+        <ChatBot />
       </body>
     </html>
   );
