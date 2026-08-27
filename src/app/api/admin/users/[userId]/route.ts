@@ -35,6 +35,11 @@ export async function PATCH(request: NextRequest, { params }: { params: { userId
         state: body.state ?? undefined,
         pincode: body.pincode ?? undefined,
       },
+      include: {
+        orders: {
+          select: { id: true },
+        },
+      },
     });
 
     return NextResponse.json(updatedUser);
