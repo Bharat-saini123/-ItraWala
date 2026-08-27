@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/utils";
 import { SignOutButton } from "@/components/SignOutButton";
+import { ProfileEditor } from "@/components/ProfileEditor";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -44,6 +45,10 @@ export default async function AccountPage() {
           )}
           <SignOutButton />
         </div>
+      </div>
+
+      <div className="mt-10">
+        <ProfileEditor profile={profile!} email={user.email!} />
       </div>
 
       <div className="mt-10">
