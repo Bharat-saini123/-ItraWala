@@ -3,6 +3,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/ProductCard";
 import { ArchDivider, GatewayMark } from "@/components/ArchDivider";
+import { ReviewList } from "@/components/Reviews";
 import type { ProductDTO } from "@/types";
 
 export const revalidate = 60;
@@ -25,8 +26,17 @@ async function getCategories() {
   return prisma.category.findMany({ orderBy: { name: "asc" } });
 }
 
+async function getReviews() {
+  return prisma.review.findMany({
+    where: { isApproved: true },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+    select: { id: true, name: true, rating: true, comment: true },
+  });
+}
+
 export default async function HomePage() {
-  const [featured, categories] = await Promise.all([getFeatured(), getCategories()]);
+  const [featured, categories, reviews] = await Promise.all([getFeatured(), getCategories(), getReviews()]);
 
   return (
     <div>
@@ -155,6 +165,19 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+        </section>
+      )}
+
+      {reviews.length > 0 && (
+        <section className="mx-auto max-w-7xl px-5 py-16 md:px-8">
+          <div className="mb-10 flex items-end justify-between gap-4">
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">From our customers</p>
+              <h2 className="mt-2 font-display text-3xl text-maroon">Loved by fragrance seekers</h2>
+            </div>
+            <Link href="/about" className="font-body text-sm font-semibold uppercase tracking-wider text-maroon hover:underline">Read all reviews</Link>
+          </div>
+          <ReviewList reviews={reviews} />
         </section>
       )}
 

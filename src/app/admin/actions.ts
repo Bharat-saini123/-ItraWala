@@ -113,3 +113,10 @@ export async function createCategory(name: string, description?: string) {
   });
   revalidatePath("/admin/products");
 }
+
+export async function updateReviewApproval(id: string, isApproved: boolean) {
+  await assertAdmin();
+  await prisma.review.update({ where: { id }, data: { isApproved } });
+  revalidatePath("/admin/reviews");
+  revalidatePath("/about");
+}
