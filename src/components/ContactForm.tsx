@@ -16,10 +16,11 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
     const formData = new FormData(form);
     const name = String(formData.get("name") ?? "").trim();
     const email = String(formData.get("email") ?? "").trim();
+    const phone = String(formData.get("phone") ?? "").trim();
     const subject = String(formData.get("subject") ?? "").trim();
     const message = String(formData.get("message") ?? "").trim();
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !phone || !subject || !message) {
       setStatus("Please fill in all fields before sending your message.");
       setIsLoading(false);
       return;
@@ -34,6 +35,7 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
         body: JSON.stringify({
           name,
           email,
+          phone,
           subject,
           message,
         }),
@@ -81,6 +83,7 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
           <FormInput label="Name" name="name" required />
           <FormInput label="Email" name="email" type="email" required />
         </div>
+        <FormInput label="Phone Number" name="phone" type="tel" required />
         <FormInput label="Subject" name="subject" required />
         <label className="block font-body text-xs font-semibold uppercase tracking-wide text-ink/60">
           Message

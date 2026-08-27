@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import type { Message } from "@prisma/client";
-import { Mail, X } from "lucide-react";
+import { Mail, MessageCircle, X } from "lucide-react";
+
+function getWhatsAppNumber(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length === 10 ? `91${digits}` : digits;
+}
 
 export default function ContactsList({ initialMessages }: { initialMessages: Message[] }) {
   const [messages, setMessages] = useState(initialMessages);
@@ -138,6 +143,12 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
                 >
                   {selectedMessage.email}
                 </a>
+                <a
+                  href={`tel:${selectedMessage.phone}`}
+                  className="block font-body text-sm text-maroon hover:underline"
+                >
+                  {selectedMessage.phone}
+                </a>
               </div>
 
               {/* Subject */}
@@ -179,6 +190,15 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
                   className="flex-1 rounded bg-maroon px-4 py-2 font-body text-sm font-semibold text-white hover:bg-maroon-dark"
                 >
                   Reply via Email
+                </a>
+                <a
+                  href={`https://wa.me/${getWhatsAppNumber(selectedMessage.phone)}?text=${encodeURIComponent(`Hello ${selectedMessage.name}, regarding your query: ${selectedMessage.subject}`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex flex-1 items-center justify-center gap-2 rounded bg-green-600 px-4 py-2 font-body text-sm font-semibold text-white hover:bg-green-700"
+                >
+                  <MessageCircle size={16} />
+                  Reply via WhatsApp
                 </a>
                 <button
                   onClick={() => handleDelete(selectedMessage.id)}

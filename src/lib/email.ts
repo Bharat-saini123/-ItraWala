@@ -51,6 +51,7 @@ export async function sendOrderCreatedEmail(order: OrderEmail) {
 type ContactMessage = {
   name: string;
   email: string;
+  phone: string;
   subject: string;
   message: string;
 };
@@ -61,6 +62,7 @@ export async function sendContactFormEmail(contactData: ContactMessage) {
 
   const escapedName = escapeHtml(contactData.name);
   const escapedEmail = escapeHtml(contactData.email);
+  const escapedPhone = escapeHtml(contactData.phone);
   const escapedSubject = escapeHtml(contactData.subject);
   const escapedMessage = escapeHtml(contactData.message).replace(/\n/g, "<br />");
 
@@ -88,6 +90,7 @@ export async function sendContactFormEmail(contactData: ContactMessage) {
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;color:#574b45;font-size:14px;line-height:1.8;">
                   <tr><td style="padding:8px 0;"><strong>नाम (Name):</strong></td><td align="right" style="color:#241813;">${escapedName}</td></tr>
                   <tr><td style="padding:8px 0;"><strong>Email:</strong></td><td align="right" style="color:#241813;"><a href="mailto:${escapedEmail}" style="color:#5c1a28;text-decoration:none;">${escapedEmail}</a></td></tr>
+                  <tr><td style="padding:8px 0;"><strong>Phone:</strong></td><td align="right" style="color:#241813;"><a href="tel:${escapedPhone}" style="color:#5c1a28;text-decoration:none;">${escapedPhone}</a></td></tr>
                   <tr><td style="padding:8px 0;"><strong>विषय (Subject):</strong></td><td align="right" style="color:#241813;">${escapedSubject}</td></tr>
                 </table>
               </td></tr>
@@ -116,7 +119,7 @@ export async function sendContactFormEmail(contactData: ContactMessage) {
       from: `ItraWala <${senderEmail}>`,
       to: adminEmail,
       subject: `नया संदेश - ${contactData.subject}`,
-      text: `नया संदेश\n\nनाम: ${contactData.name}\nEmail: ${contactData.email}\nविषय: ${contactData.subject}\n\nसंदेश:\n${contactData.message}`,
+      text: `नया संदेश\n\nनाम: ${contactData.name}\nEmail: ${contactData.email}\nPhone: ${contactData.phone}\nविषय: ${contactData.subject}\n\nसंदेश:\n${contactData.message}`,
       html,
     });
   } catch (error) {

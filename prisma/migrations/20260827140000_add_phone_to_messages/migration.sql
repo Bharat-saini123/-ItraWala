@@ -1,0 +1,3 @@
+ALTER TABLE "messages" ADD COLUMN "phone" TEXT NOT NULL DEFAULT '';
+
+ALTER TABLE "messages" ALTER COLUMN "phone" DROP DEFAULT;
