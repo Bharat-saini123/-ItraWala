@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, ShoppingCart, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Mail, ArrowLeft } from "lucide-react";
 
 const LINKS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+  { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/contacts", label: "Messages", icon: Mail },
 ];
 
 export function AdminSidebar() {
