@@ -18,14 +18,16 @@ A full e-commerce site for a traditional Indian attar / perfume brand, built wit
 2. In **Project Settings → API**, copy:
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (keep secret, not used by the
-     app directly today but handy for future admin scripts)
+   - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (keep secret; used only by the
+     server-side registration route to generate confirmation links)
 3. In **Project Settings → Database → Connection string**, copy the pooled
    connection string (port `6543`) into `DATABASE_URL` and the direct
    connection (port `5432`) into `DIRECT_URL`. Replace `[YOUR-PASSWORD]` with
    the password you set in step 1.
 
-Copy `.env.example` to `.env` and fill in all the values above.
+Copy `.env.example` to `.env` and fill in all the values above. Also configure
+`ADMIN_EMAIL`, `SMTP_USER`, and `SMTP_PASS` with a Gmail App Password. Contact,
+order, and account-confirmation emails are sent through Nodemailer in English.
 
 ## 2. Install dependencies & create the database tables
 
@@ -59,7 +61,8 @@ isn't empty on first run. Delete or edit them any time from the admin panel.
 ## 5. Make yourself an admin
 
 1. Run the app (`npm run dev`) and sign up for an account at `/register`.
-2. Confirm your email (check inbox — Supabase sends the confirmation link).
+2. Confirm your email (check your inbox — ItraWala sends the confirmation link
+  through Nodemailer).
 3. In **Supabase Dashboard → SQL Editor**, run:
 
    ```sql
@@ -74,7 +77,8 @@ isn't empty on first run. Delete or edit them any time from the admin panel.
 npm run dev
 ```
 
-Visit `http://localhost:3000`.
+The production URL is `https://itra-wala.vercel.app/`. Local development runs at
+`http://localhost:3000`.
 
 ## Project structure
 

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,25 +15,24 @@ export default function RegisterPage() {
     setError(null);
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signUp({
-      email: String(formData.get("email")),
-      password: String(formData.get("password")),
-      options: {
-        data: {
-          full_name: String(formData.get("name")),
-          phone: String(formData.get("phone")),
-          city: String(formData.get("city")),
-          state: String(formData.get("state")),
-          pincode: String(formData.get("pincode")),
-        },
-      },
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: String(formData.get("email")),
+        password: String(formData.get("password")),
+        fullName: String(formData.get("name")),
+        phone: String(formData.get("phone")),
+        city: String(formData.get("city")),
+        state: String(formData.get("state")),
+        pincode: String(formData.get("pincode")),
+      }),
     });
+    const result = await response.json();
 
     setLoading(false);
-    if (error) {
-      setError(error.message);
+    if (!response.ok) {
+      setError(result.error || "Unable to create your account.");
       return;
     }
     setDone(true);
