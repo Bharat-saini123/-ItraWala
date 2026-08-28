@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const productionOrigin = "https://itra-wala.vercel.app";
+const productionOrigin = process.env.NEXT_PUBLIC_SITE_URL!;
 
 export function AuthRedirectGuard() {
   useEffect(() => {

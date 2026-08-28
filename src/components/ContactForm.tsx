@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
 
 export default function ContactForm({ adminEmail }: { adminEmail: string }) {
+  const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
   const [status, setStatus] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +61,7 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
   return (
     <div className="mt-14 grid gap-10 md:grid-cols-[1fr_1.2fr]">
       <div className="space-y-6">
-        <ContactRow icon={<Phone size={18} />} label="Phone" value="+91 96141 48000" />
+        <ContactRow icon={<Phone size={18} />} label="Phone" value={ownerPhone} />
         <ContactRow icon={<Mail size={18} />} label="Email" value={adminEmail} />
         <ContactRow
           icon={<MapPin size={18} />}

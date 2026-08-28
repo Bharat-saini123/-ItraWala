@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,6 +11,24 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    let active = true;
+
+    async function redirectIfAuthenticated() {
+      const { data } = await supabase.auth.getSession();
+      if (!active || !data.session) return;
+
+      router.replace(searchParams.get("next") ?? "/account");
+      router.refresh();
+    }
+
+    redirectIfAuthenticated();
+    return () => {
+      active = false;
+    };
+  }, [router, searchParams]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

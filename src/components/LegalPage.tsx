@@ -15,6 +15,8 @@ type LegalPageProps = {
 
 export function LegalPage({ eyebrow, title, intro, sections }: LegalPageProps) {
   const adminEmail = process.env.ADMIN_EMAIL ?? "";
+  const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
+  const ownerPhoneLink = ownerPhone.replace(/\D/g, "");
 
   return (
     <div className="bg-arch-pattern">
@@ -46,7 +48,7 @@ export function LegalPage({ eyebrow, title, intro, sections }: LegalPageProps) {
 
         <div className="mt-8 border-l-2 border-gold px-5 py-2">
           <p className="font-body text-sm leading-6 text-ink/70">
-            Need help? Contact us at <a href={`mailto:${adminEmail}`} className="font-semibold text-maroon hover:underline">{adminEmail}</a> or call <a href="tel:+919614148000" className="font-semibold text-maroon hover:underline">9614148000</a>.
+            Need help? Contact us at <a href={`mailto:${adminEmail}`} className="font-semibold text-maroon hover:underline">{adminEmail}</a> or call <a href={`tel:+${ownerPhoneLink}`} className="font-semibold text-maroon hover:underline">{ownerPhone}</a>.
           </p>
           <Link href="/contact" className="mt-2 inline-block font-body text-sm font-semibold text-maroon hover:underline">
             Go to contact page

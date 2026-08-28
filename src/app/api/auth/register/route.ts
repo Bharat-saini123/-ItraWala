@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
           state: String(body.state ?? "").trim(),
           pincode: String(body.pincode ?? "").trim(),
         },
-        redirectTo: "https://itra-wala.vercel.app/login",
+        redirectTo: `${siteUrl}/login`,
       },
     });
 

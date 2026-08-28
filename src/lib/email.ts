@@ -3,7 +3,7 @@ import type { OrderStatus } from "@prisma/client";
 
 const senderEmail = process.env.SMTP_USER || "sainibharat277@gmail.com";
 const adminEmail = process.env.ADMIN_EMAIL || "sainibharat277@gmail.com";
-export const siteUrl = "https://itra-wala.vercel.app";
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({

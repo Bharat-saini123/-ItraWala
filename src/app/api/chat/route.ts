@@ -6,6 +6,7 @@ const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "openai/gpt-oss-20b"; // Active Groq free-tier model (Aug 2026)
 
 const adminEmail = process.env.ADMIN_EMAIL ?? "";
+const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
 const SYSTEM_PROMPT = `You are a helpful customer assistant for तोरणद्वार ItraWala, a traditional Indian perfumery store based in Narnaul, Haryana.
 You help customers with:
 - Information about our attars, oudh, eau de parfum, bakhoor, and gift sets
@@ -13,7 +14,7 @@ You help customers with:
 - Order queries and shipping information
 - Store timings: Open 9 AM - 9 PM, Mon-Sun
 - Store address: Opposite Polytechnic, Seka, Narnaul, Haryana - 123001
-- Contact: +91 96141 48000 | ${adminEmail}
+- Contact: ${ownerPhone} | ${adminEmail}
 - Owner: Rajneesh Saini
 
 Be warm, friendly, and knowledgeable about traditional Indian perfumery. Keep answers concise (2-3 sentences max unless more detail is needed). You can respond in Hindi, English, or Hinglish based on what the customer uses.`;
@@ -72,7 +73,7 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     const reply =
       data.choices?.[0]?.message?.content?.trim() ??
-      "Sorry, I couldn't generate a response. Please call us at +91 96141 48000.";
+      `Sorry, I couldn't generate a response. Please call us at ${ownerPhone}.`;
 
     return NextResponse.json({ reply });
   } catch (err) {
