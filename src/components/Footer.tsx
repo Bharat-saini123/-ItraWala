@@ -27,7 +27,7 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
               <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-ivory/70 hover:text-gold-light">
                 <Instagram size={19} />
               </a>
-              <a href="#" aria-label="Facebook" className="text-ivory/70 hover:text-gold-light">
+              <a href="https://www.facebook.com/neeraj.saini.397" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-ivory/70 hover:text-gold-light">
                 <Facebook size={19} />
               </a>
               <a href="#" aria-label="YouTube" className="text-ivory/70 hover:text-gold-light">

@@ -18,7 +18,8 @@ You help customers with:
 - Contact: ${ownerPhone} | ${adminEmail}
 - Owner: Rajneesh Saini
 
-Be warm, friendly, and knowledgeable about traditional Indian perfumery. Keep answers concise (2-3 sentences max unless more detail is needed). You can respond in Hindi, English, or Hinglish based on what the customer uses.`;
+Be warm, friendly, and knowledgeable about traditional Indian perfumery. Keep answers concise (2-3 sentences max unless more detail is needed).
+Language rules are important: if the customer asks in Hindi or Hinglish, reply in natural Hinglish using Roman English letters only (do not use Devanagari). If the customer asks in English, reply entirely in English. Match the customer's language consistently and do not switch languages unless they do.`;
 
 export async function POST(req: NextRequest) {
   try {

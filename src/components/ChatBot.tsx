@@ -10,12 +10,16 @@ interface Message {
 
 export function ChatBot({ adminEmail }: { adminEmail: string }) {
   const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
+  const whatsappNumber = ownerPhone.replace(/\D/g, "");
+  const whatsappLink = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello, ItraWala ke products ke baare mein jaankari chahiye.")}`
+    : "https://wa.me/";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content:
-        "Aadaab! 🌸 मैं ItraWala का AI सहायक हूं। Attars, oudh, या किसी भी product के बारे में पूछें। How can I help you today?",
+        "Namaste! 🌸 Main ItraWala ka AI assistant hoon. Attars, oudh, ya kisi bhi product ke baare mein poochhein. How can I help you today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -77,6 +81,18 @@ export function ChatBot({ adminEmail }: { adminEmail: string }) {
 
   return (
     <>
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        title="Chat on WhatsApp"
+        className="fixed bottom-24 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-105 hover:bg-[#1ebe5d] active:scale-95"
+      >
+        <MessageCircle size={21} strokeWidth={2.5} />
+        <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-ivory bg-[#25D366]" />
+      </a>
+
       {/* Floating toggle button */}
       <button
         onClick={() => setIsOpen((o) => !o)}

@@ -20,19 +20,35 @@ export default async function AboutPage() {
 
   return (
     <div>
-      <section className="mx-auto max-w-5xl px-5 py-16 text-center md:px-8">
-        <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">
-          Our Story
-        </p>
-        <h1 className="mt-3 font-display text-4xl text-maroon md:text-5xl">
-          A gateway between tradition and today
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl font-body text-base leading-relaxed text-ink/70">
-          तोरणद्वार means &ldquo;gateway&rdquo; — a threshold you pass through into
-          somewhere meaningful. That is exactly what we want ItraWala to be: a
-          doorway back to the slow, careful perfumery of Kannauj, made easy to
-          bring into modern life.
-        </p>
+      <section className="bg-arch-pattern">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1fr_0.8fr] md:items-center md:px-8 md:py-24">
+          <div>
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">Our Story</p>
+            <h1 className="mt-4 max-w-xl font-display text-4xl leading-tight text-maroon md:text-6xl">
+              A gateway between tradition and today
+            </h1>
+            <p className="mt-6 max-w-2xl font-body text-base leading-relaxed text-ink/70">
+              तोरणद्वार means &ldquo;gateway&rdquo; — a threshold you pass through into
+              somewhere meaningful. That is exactly what we want ItraWala to be: a
+              doorway back to the slow, careful perfumery of Kannauj, made easy to
+              bring into modern life.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3 font-body text-xs font-semibold uppercase tracking-wider text-maroon">
+              <span className="rounded-full border border-gold/40 bg-paper px-4 py-2">Kannauj craft</span>
+              <span className="rounded-full border border-gold/40 bg-paper px-4 py-2">Small-batch care</span>
+            </div>
+          </div>
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="absolute -inset-3 rounded-[2rem] border border-gold/30" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-maroon shadow-soft">
+              <Image src="/images/image3.jpg" alt="Traditional ItraWala fragrance bottles" fill className="object-cover" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-maroon/90 to-transparent p-6 pt-20">
+                <p className="font-display text-2xl text-ivory">Scent with a soul</p>
+                <p className="mt-1 font-body text-sm text-ivory/70">From our family to yours</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <div className="relative mx-auto aspect-[16/7] max-w-6xl overflow-hidden rounded-3xl px-5 md:px-8">
@@ -45,8 +61,8 @@ export default async function AboutPage() {
       </div>
 
       <section className="mx-auto max-w-4xl px-5 py-16 md:px-8">
-        <div className="mb-16 grid gap-8 sm:grid-cols-[180px_1fr] sm:items-center">
-          <div className="relative mx-auto aspect-square w-44 overflow-hidden rounded-full border-4 border-gold/30">
+        <div className="mb-16 grid gap-8 rounded-3xl border border-gold/20 bg-paper p-6 shadow-soft sm:grid-cols-[180px_1fr] sm:items-center sm:p-8">
+          <div className="relative mx-auto aspect-square w-44 overflow-hidden rounded-full border-4 border-gold/30 shadow-lg">
             <Image src="/images/owner.jpg" alt="Rajneesh Saini, owner of ItraWala" fill sizes="176px" className="object-cover" />
           </div>
           <div>
@@ -58,6 +74,9 @@ export default async function AboutPage() {
               लिए इत्र भी भेजते हैं। सुगंध और भक्ति से जुड़ा यह भाव ItraWala की
               यात्रा का एक खास हिस्सा है।
             </p>
+            <Link href="https://www.facebook.com/neeraj.saini.397" target="_blank" className="mt-5 inline-flex rounded-full bg-maroon px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-wider text-ivory transition hover:bg-maroon-dark">
+              Meet us on Facebook
+            </Link>
           </div>
         </div>
 
@@ -104,13 +123,13 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <div className="grid gap-10 text-center sm:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-gold/20 bg-gold/20 text-center sm:grid-cols-3">
           {[
             { n: "1000+", label: "Years of Kannauj perfumery heritage" },
             { n: "40+", label: "Attars, oudhs & blends in our collection" },
             { n: "10,000+", label: "Bottles shipped across India" },
           ].map((s) => (
-            <div key={s.label}>
+            <div key={s.label} className="bg-paper px-4 py-6">
               <p className="font-display text-3xl text-maroon">{s.n}</p>
               <p className="mt-2 font-body text-xs uppercase tracking-wide text-ink/55">
                 {s.label}
