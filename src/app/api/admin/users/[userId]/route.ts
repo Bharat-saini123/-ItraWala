@@ -23,6 +23,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { userId
 
     const { userId } = params;
     const body = await request.json();
+    const allowedRoles = new Set(["CUSTOMER", "ADMIN"]);
+    if (body.role !== undefined && !allowedRoles.has(body.role)) {
+      return NextResponse.json({ error: "Invalid role" }, { status: 400 });
+    }
+    if (userId === user.id && body.role === "CUSTOMER") {
+      return NextResponse.json({ error: "You cannot remove your own admin access" }, { status: 400 });
+    }
 
     const updatedUser = await prisma.profile.update({
       where: { id: userId },

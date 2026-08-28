@@ -23,11 +23,14 @@ export async function PATCH(request: NextRequest, { params }: { params: { messag
 
     const { messageId } = params;
     const body = await request.json();
+    if (typeof body.isRead !== "boolean") {
+      return NextResponse.json({ error: "isRead must be a boolean" }, { status: 400 });
+    }
 
     const updatedMessage = await prisma.message.update({
       where: { id: messageId },
       data: {
-        isRead: body.isRead ?? undefined,
+        isRead: body.isRead,
       },
     });
 

@@ -14,12 +14,20 @@ export async function PATCH(request: Request) {
     }
 
     const formData = await request.formData();
-    const fullName = formData.get("fullName") as string;
-    const phone = formData.get("phone") as string;
-    const address = formData.get("address") as string;
-    const city = formData.get("city") as string;
-    const state = formData.get("state") as string;
-    const pincode = formData.get("pincode") as string;
+    const getText = (key: string) => {
+      const value = formData.get(key);
+      return typeof value === "string" ? value : "";
+    };
+    const fullName = getText("fullName");
+    const phone = getText("phone");
+    const address = getText("address");
+    const city = getText("city");
+    const state = getText("state");
+    const pincode = getText("pincode");
+
+    if ([fullName, phone, address, city, state, pincode].some((value) => value.length > 500)) {
+      return NextResponse.json({ message: "Profile fields are too long" }, { status: 400 });
+    }
 
     // Validate required fields
     if (!fullName || !fullName.trim()) {

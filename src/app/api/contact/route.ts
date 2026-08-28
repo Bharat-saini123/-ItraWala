@@ -1,9 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { sendContactFormEmail } from "@/lib/email";
+import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const rateLimit = checkRateLimit(`contact:${getClientIp(request)}`, 5, 10 * 60 * 1000);
+    if (!rateLimit.allowed) return rateLimitResponse(rateLimit.retryAfter);
+
     const body = await request.json();
     const { name, email, phone, subject, message } = body;
 
@@ -15,7 +19,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const phoneDigits = String(phone).replace(/\D/g, "");
+    if ([name, email, phone, subject, message].some((value) => typeof value !== "string")) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPhone = phone.trim();
+    const trimmedSubject = subject.trim();
+    const trimmedMessage = message.trim();
+    if (trimmedName.length > 100 || trimmedEmail.length > 254 || trimmedPhone.length > 30 || trimmedSubject.length > 200 || trimmedMessage.length > 5000) {
+      return NextResponse.json({ error: "One or more fields are too long" }, { status: 400 });
+    }
+
+    const phoneDigits = trimmedPhone.replace(/\D/g, "");
     if (phoneDigits.length < 10 || phoneDigits.length > 15) {
       return NextResponse.json(
         { error: "Please enter a valid phone number" },
@@ -25,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(trimmedEmail)) {
       return NextResponse.json(
         { error: "Invalid email format" },
         { status: 400 },
@@ -35,11 +52,11 @@ export async function POST(request: NextRequest) {
     // Save message to database
     const savedMessage = await prisma.message.create({
       data: {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        phone: phone.trim(),
-        subject: subject.trim(),
-        message: message.trim(),
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        subject: trimmedSubject,
+        message: trimmedMessage,
       },
     });
 

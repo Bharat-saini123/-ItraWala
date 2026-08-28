@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
 
 // Groq API — https://console.groq.com
 // OpenAI-compatible endpoint, fast inference
@@ -21,6 +22,9 @@ Be warm, friendly, and knowledgeable about traditional Indian perfumery. Keep an
 
 export async function POST(req: NextRequest) {
   try {
+    const rateLimit = checkRateLimit(`chat:${getClientIp(req)}`, 20, 10 * 60 * 1000);
+    if (!rateLimit.allowed) return rateLimitResponse(rateLimit.retryAfter);
+
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
@@ -35,8 +39,18 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { messages } = body;
 
-    if (!Array.isArray(messages) || messages.length === 0) {
+    if (!Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
       return NextResponse.json({ error: "No messages provided" }, { status: 400 });
+    }
+
+    const validMessages = messages.slice(-10).filter(
+      (message): message is { role: "user" | "assistant"; content: string } =>
+        message && (message.role === "user" || message.role === "assistant") &&
+        typeof message.content === "string" && message.content.trim().length > 0 &&
+        message.content.length <= 4000,
+    );
+    if (validMessages.length === 0) {
+      return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
     }
 
     const response = await fetch(GROQ_API_URL, {
@@ -50,7 +64,7 @@ export async function POST(req: NextRequest) {
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           // Keep last 10 messages for context window
-          ...messages.slice(-10).map((m: { role: string; content: string }) => ({
+          ...validMessages.map((m) => ({
             role: m.role,
             content: m.content,
           })),

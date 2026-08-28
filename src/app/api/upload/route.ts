@@ -67,6 +67,10 @@ export async function POST(req: NextRequest) {
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: "File too large (max 5 MB)" }, { status: 400 });
     }
+    const extension = file.name.split(".").pop()?.toLowerCase();
+    if (!extension || !["jpg", "jpeg", "png", "webp", "gif"].includes(extension)) {
+      return NextResponse.json({ error: "Unsupported image format" }, { status: 400 });
+    }
 
     // ── 3. Upload using admin client (bypasses RLS) ───────────────────────
     const supabaseAdmin = getAdminClient();
@@ -84,15 +88,14 @@ export async function POST(req: NextRequest) {
         console.error("[upload] Could not create bucket:", createErr);
         return NextResponse.json(
           {
-            error: `Storage bucket "${BUCKET}" not found and could not be created. Check your SUPABASE_SERVICE_ROLE_KEY in .env — it must be the secret service_role key, NOT the anon key.`,
+            error: "Image storage is not available. Please contact an administrator.",
           },
           { status: 500 }
         );
       }
     }
 
-    const ext = file.name.split(".").pop() ?? "jpg";
-    const path = `products/${crypto.randomUUID()}.${ext}`;
+    const path = `products/${crypto.randomUUID()}.${extension}`;
     const arrayBuffer = await file.arrayBuffer();
 
     const { error: uploadError } = await supabaseAdmin.storage
@@ -105,7 +108,7 @@ export async function POST(req: NextRequest) {
 
     if (uploadError) {
       console.error("[upload] Supabase upload error:", uploadError);
-      return NextResponse.json({ error: uploadError.message }, { status: 500 });
+      return NextResponse.json({ error: "Image upload failed. Please try again." }, { status: 500 });
     }
 
     const { data } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(path);

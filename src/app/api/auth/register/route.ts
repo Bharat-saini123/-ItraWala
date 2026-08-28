@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { sendAuthConfirmationEmail, siteUrl } from "@/lib/email";
+import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,11 +11,15 @@ const supabaseAdmin = createClient(
 
 export async function POST(request: NextRequest) {
   try {
+    const rateLimit = checkRateLimit(`register:${getClientIp(request)}`, 5, 15 * 60 * 1000);
+    if (!rateLimit.allowed) return rateLimitResponse(rateLimit.retryAfter);
+
     const body = await request.json();
     const email = String(body.email ?? "").trim().toLowerCase();
     const password = String(body.password ?? "");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!email || !password || password.length < 6) {
+    if (!emailRegex.test(email) || password.length < 8 || password.length > 128) {
       return NextResponse.json(
         { error: "Enter a valid email and a password of at least 6 characters." },
         { status: 400 },
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     if (error || !data.properties?.action_link) {
       return NextResponse.json(
-        { error: error?.message || "Unable to create your account." },
+        { error: "Unable to create your account. Please check your details and try again." },
         { status: 400 },
       );
     }
