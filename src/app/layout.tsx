@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ChatBot } from "@/components/ChatBot";
+import { AuthRedirectGuard } from "@/components/AuthRedirectGuard";
 
 const display = Playfair_Display({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="font-body">
+        <AuthRedirectGuard />
         <Navbar />
         <main className="min-h-[60vh]">{children}</main>
         <Footer adminEmail={adminEmail} />
