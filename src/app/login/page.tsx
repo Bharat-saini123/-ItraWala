@@ -17,6 +17,11 @@ function LoginForm() {
     let active = true;
 
     async function redirectIfAuthenticated() {
+      if (searchParams.get("confirmed") === "1") {
+        await supabase.auth.signOut();
+        return;
+      }
+
       const { data } = await supabase.auth.getSession();
       if (!active || !data.session) return;
 

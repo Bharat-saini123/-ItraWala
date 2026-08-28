@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
           state: String(body.state ?? "").trim(),
           pincode: String(body.pincode ?? "").trim(),
         },
-        redirectTo: `${siteUrl}/login`,
+        redirectTo: `${siteUrl}/auth/confirmed`,
       },
     });
 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const confirmationLink = new URL(data.properties.action_link);
-    confirmationLink.searchParams.set("redirect_to", `${siteUrl}/login`);
+    confirmationLink.searchParams.set("redirect_to", `${siteUrl}/auth/confirmed`);
 
     await sendAuthConfirmationEmail(
       email,

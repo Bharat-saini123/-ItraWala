@@ -2,14 +2,12 @@
 
 import { useEffect } from "react";
 
-const productionOrigin = process.env.NEXT_PUBLIC_SITE_URL!;
-
 export function AuthRedirectGuard() {
   useEffect(() => {
     if (!window.location.hash.includes("access_token=")) return;
-    if (window.location.origin === productionOrigin) return;
+    if (window.location.pathname === "/auth/confirmed") return;
 
-    window.location.replace(`${productionOrigin}/login${window.location.hash}`);
+    window.location.replace(`/auth/confirmed${window.location.hash}`);
   }, []);
 
   return null;
