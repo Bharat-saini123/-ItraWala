@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { sendAuthConfirmationEmail } from "@/lib/email";
+import { sendAuthConfirmationEmail, siteUrl } from "@/lib/email";
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -44,10 +44,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const confirmationLink = new URL(data.properties.action_link);
+    confirmationLink.searchParams.set("redirect_to", `${siteUrl}/login`);
+
     await sendAuthConfirmationEmail(
       email,
       String(body.fullName ?? "Customer").trim(),
-      data.properties.action_link,
+      confirmationLink.toString(),
     );
     return NextResponse.json({ success: true });
   } catch (error) {
