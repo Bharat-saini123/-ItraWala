@@ -63,7 +63,7 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
             </ul>
           </div>
 
-          {/* Contact + newsletter */}
+          {/* Contact */}
           <div>
             <h3 className="mb-4 font-body text-xs uppercase tracking-[0.25em] text-gold-light">
               Stay In Touch
@@ -75,19 +75,6 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
               <li className="text-xs text-ivory/55">Open 9 AM - 9 PM, Mon-Sun</li>
               <li className="text-xs text-gold-light">Owner: Rajneesh Saini</li>
             </ul>
-            <form className="flex overflow-hidden rounded-full border border-gold/40">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full bg-transparent px-4 py-2 font-body text-sm text-ivory placeholder:text-ivory/50 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-gold px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-maroon-dark transition hover:bg-gold-light"
-              >
-                Join
-              </button>
-            </form>
           </div>
         </div>
 
