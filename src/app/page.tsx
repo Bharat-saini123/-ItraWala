@@ -30,7 +30,7 @@ async function getReviews() {
   return prisma.review.findMany({
     where: { isApproved: true },
     orderBy: { createdAt: "desc" },
-    take: 3,
+    take: 4,
     select: { id: true, name: true, rating: true, comment: true },
   });
 }
