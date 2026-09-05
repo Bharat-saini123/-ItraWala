@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Message } from "@prisma/client";
 import { Mail, MessageCircle, X } from "lucide-react";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 
 function getWhatsAppNumber(phone: string) {
   const digits = phone.replace(/\D/g, "");
@@ -12,6 +13,7 @@ function getWhatsAppNumber(phone: string) {
 export default function ContactsList({ initialMessages }: { initialMessages: Message[] }) {
   const [messages, setMessages] = useState(initialMessages);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleMarkAsRead = async (messageId: string) => {
@@ -38,8 +40,6 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
   };
 
   const handleDelete = async (messageId: string) => {
-    if (!confirm("Are you sure you want to delete this message?")) return;
-
     setLoading(true);
     try {
       const response = await fetch(`/api/admin/messages/${messageId}`, {
@@ -54,6 +54,7 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
       console.error("Delete failed:", error);
     } finally {
       setLoading(false);
+      setMessageToDelete(null);
     }
   };
 
@@ -203,7 +204,7 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
                 </a>
                 <button
                   type="button"
-                  onClick={() => handleDelete(selectedMessage.id)}
+                  onClick={() => setMessageToDelete(selectedMessage.id)}
                   disabled={loading}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-3 font-body text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
@@ -222,6 +223,18 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={messageToDelete !== null}
+        title="Delete message?"
+        description="Are you sure you want to delete this message? This action cannot be undone."
+        pending={loading}
+        onConfirm={() => {
+          if (messageToDelete) void handleDelete(messageToDelete);
+        }}
+        onCancel={() => {
+          if (!loading) setMessageToDelete(null);
+        }}
+      />
     </div>
   );
 }
