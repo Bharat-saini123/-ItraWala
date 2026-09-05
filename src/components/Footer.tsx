@@ -89,6 +89,20 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
             <Link href="/returns" className="hover:text-gold-light">Returns</Link>
           </div>
         </div>
+
+        <div className="mt-4 text-center font-body text-sm text-ivory/70 md:text-right">
+          <p>
+            Powered by{' '}
+            <a
+              href="https://ritbha.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-gold-light underline decoration-gold-light/60 underline-offset-4 transition-colors hover:text-gold-light/90"
+            >
+              Ritbha
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );

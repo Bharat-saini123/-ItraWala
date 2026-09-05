@@ -108,17 +108,19 @@ export function ChatBot({ adminEmail }: { adminEmail: string }) {
           <span className="absolute -top-6 whitespace-nowrap rounded-full bg-white px-2.5 py-1 font-body text-[11px] font-semibold text-[#168c46] shadow-sm">
             WhatsApp
           </span>
-          <a
-            href={whatsappLink}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Chat on WhatsApp"
-            title="Chat on WhatsApp"
-            className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-105 hover:bg-[#1ebe5d] active:scale-95"
-          >
-            <WhatsAppIcon />
-            <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-ivory bg-[#25D366]" />
-          </a>
+          <div className="relative">
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Chat on WhatsApp"
+              title="Chat on WhatsApp"
+              className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all hover:scale-105 hover:bg-[#1ebe5d] active:scale-95"
+            >
+              <WhatsAppIcon />
+            </a>
+            <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-ivory bg-[#25D366]" />
+          </div>
         </div>
       </div>
 
