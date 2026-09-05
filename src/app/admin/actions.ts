@@ -120,3 +120,10 @@ export async function updateReviewApproval(id: string, isApproved: boolean) {
   revalidatePath("/admin/reviews");
   revalidatePath("/about");
 }
+
+export async function deleteReview(id: string) {
+  await assertAdmin();
+  await prisma.review.delete({ where: { id } });
+  revalidatePath("/admin/reviews");
+  revalidatePath("/about");
+}

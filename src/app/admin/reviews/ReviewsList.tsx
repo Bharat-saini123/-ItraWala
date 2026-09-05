@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { updateReviewApproval } from "../actions";
+import { deleteReview, updateReviewApproval } from "../actions";
 
 type Review = {
   id: string;
@@ -21,6 +21,12 @@ export default function ReviewsList({ initialReviews }: { initialReviews: Review
     });
   }
 
+  function removeReview(id: string) {
+    startTransition(async () => {
+      await deleteReview(id);
+    });
+  }
+
   return (
     <div className="space-y-4">
       {initialReviews.length === 0 ? (
@@ -37,9 +43,10 @@ export default function ReviewsList({ initialReviews }: { initialReviews: Review
             </span>
           </div>
           <p className="mt-3 font-body text-sm leading-relaxed text-ink/70">{review.comment}</p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             {!review.isApproved && <button type="button" disabled={isPending} onClick={() => changeApproval(review.id, true)} className="rounded-full bg-maroon px-4 py-2 font-body text-xs font-semibold uppercase tracking-wide text-ivory disabled:opacity-60">Approve</button>}
             {review.isApproved && <button type="button" disabled={isPending} onClick={() => changeApproval(review.id, false)} className="rounded-full border border-maroon/30 px-4 py-2 font-body text-xs font-semibold uppercase tracking-wide text-maroon disabled:opacity-60">Hide review</button>}
+            <button type="button" disabled={isPending} onClick={() => removeReview(review.id)} className="rounded-full border border-red-200 px-4 py-2 font-body text-xs font-semibold uppercase tracking-wide text-red-700 disabled:opacity-60">Delete</button>
           </div>
         </article>
       ))}

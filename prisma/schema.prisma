@@ -133,7 +133,7 @@ model Message {
 
 model Review {
   id         String   @id @default(uuid())
-  profileId  String?  @db.Uuid
+  profileId  String?  @unique @db.Uuid
   profile    Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
   name       String
   rating     Int

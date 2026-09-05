@@ -9,13 +9,22 @@ export const metadata = { title: "Our Story — ItraWala" };
 
 export default async function AboutPage() {
   const supabase = createClient();
-  const [{ data: { user } }, reviews] = await Promise.all([
-    supabase.auth.getUser(),
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [reviews, userReview] = await Promise.all([
     prisma.review.findMany({
       where: { isApproved: true },
       orderBy: { createdAt: "desc" },
       select: { id: true, name: true, rating: true, comment: true },
     }),
+    user
+      ? prisma.review.findFirst({
+          where: { profileId: user.id },
+          select: { id: true, name: true, rating: true, comment: true },
+        })
+      : null,
   ]);
 
   return (
@@ -111,7 +120,7 @@ export default async function AboutPage() {
           {reviews.length > 0 && <ReviewList reviews={reviews} />}
           <div className="mt-8">
             {user ? (
-              <ReviewForm />
+              <ReviewForm existingReview={userReview} />
             ) : (
               <div className="rounded-2xl border border-gold/20 bg-paper p-6 text-center">
                 <p className="font-body text-sm text-ink/70">Sign in to share your fragrance experience.</p>
