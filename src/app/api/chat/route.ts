@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
+import { prisma } from "@/lib/prisma";
 
 // Groq API — https://console.groq.com
 // OpenAI-compatible endpoint, fast inference
@@ -17,6 +18,12 @@ You help customers with:
 - Store address: Opposite Polytechnic, Seka, Narnaul, Haryana - 123001
 - Contact: ${ownerPhone} | ${adminEmail}
 - Owner: Rajneesh Saini
+
+PRODUCT DATA RULES:
+- The catalog below is the only source of truth for product names, prices, stock, sizes, descriptions, categories, and scent notes.
+- Never invent or guess a product, price, discount, availability, size, scent note, delivery promise, or order detail.
+- If the requested product or fact is not in the catalog, say that the information is not currently available and ask the customer to contact the store.
+- Recommend only products present in the catalog. Do not mention hidden products.
 
 Be warm, friendly, and knowledgeable about traditional Indian perfumery. Keep answers concise (2-3 sentences max unless more detail is needed).
 Language rules are important: if the customer asks in Hindi or Hinglish, reply in natural Hinglish using Roman English letters only (do not use Devanagari). If the customer asks in English, reply entirely in English. Match the customer's language consistently and do not switch languages unless they do.`;
@@ -54,6 +61,41 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
     }
 
+    let products;
+    try {
+      products = await prisma.product.findMany({
+        where: { isVisible: true },
+        orderBy: { name: "asc" },
+        take: 100,
+        select: {
+          name: true,
+          description: true,
+          shortSummary: true,
+          price: true,
+          stock: true,
+          volumeMl: true,
+          scentNotes: true,
+          category: { select: { name: true } },
+        },
+      });
+    } catch (error) {
+      console.error("[chat] Product catalog lookup failed:", error);
+      return NextResponse.json(
+        { error: "Product information is temporarily unavailable. Please try again shortly." },
+        { status: 503 }
+      );
+    }
+
+    const catalog = products.map((product) => ({
+      name: product.name,
+      category: product.category?.name ?? null,
+      price: product.price.toString(),
+      stock: product.stock > 0 ? "in stock" : "out of stock",
+      volumeMl: product.volumeMl,
+      summary: product.shortSummary ?? product.description,
+      scentNotes: product.scentNotes,
+    }));
+
     const response = await fetch(GROQ_API_URL, {
       method: "POST",
       headers: {
@@ -64,6 +106,10 @@ export async function POST(req: NextRequest) {
         model: GROQ_MODEL,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
+          {
+            role: "system",
+            content: `CURRENT PRODUCT CATALOG (database snapshot):\n${JSON.stringify(catalog)}`,
+          },
           // Keep last 10 messages for context window
           ...validMessages.map((m) => ({
             role: m.role,
