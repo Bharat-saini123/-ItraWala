@@ -184,27 +184,30 @@ export default function ContactsList({ initialMessages }: { initialMessages: Mes
               </div>
 
               {/* Actions */}
-              <div className="border-t border-gold/20 pt-6 flex gap-3">
+              <div className="flex flex-col gap-3 border-t border-gold/20 pt-6 sm:flex-row">
                 <a
                   href={`mailto:${selectedMessage.email}?subject=Re: ${encodeURIComponent(selectedMessage.subject)}`}
-                  className="flex-1 rounded bg-maroon px-4 py-2 font-body text-sm font-semibold text-white hover:bg-maroon-dark"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-maroon px-4 py-3 font-body text-sm font-semibold text-white transition hover:bg-maroon-dark"
                 >
+                  <Mail size={16} />
                   Reply via Email
                 </a>
                 <a
                   href={`https://wa.me/${getWhatsAppNumber(selectedMessage.phone)}?text=${encodeURIComponent(`Hello ${selectedMessage.name}, regarding your query: ${selectedMessage.subject}`)}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex flex-1 items-center justify-center gap-2 rounded bg-green-600 px-4 py-2 font-body text-sm font-semibold text-white hover:bg-green-700"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-3 font-body text-sm font-semibold text-white transition hover:bg-[#1fbf5d]"
                 >
                   <MessageCircle size={16} />
-                  Reply via WhatsApp
+                  WhatsApp
                 </a>
                 <button
+                  type="button"
                   onClick={() => handleDelete(selectedMessage.id)}
                   disabled={loading}
-                  className="rounded bg-red-600 px-4 py-2 font-body text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-3 font-body text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
                 >
+                  <X size={16} />
                   Delete
                 </button>
               </div>
