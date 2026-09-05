@@ -148,17 +148,20 @@ export default async function AboutPage() {
         </div>
 
         <div className="mt-16">
-          <div className="mb-6 flex items-end justify-between gap-4">
+          <div className="mb-8 flex flex-col gap-4 border-y border-gold/20 py-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">Inside ItraWala</p>
-              <h2 className="mt-2 font-display text-3xl text-maroon">Our fragrance collection</h2>
+              <h2 className="mt-2 font-display text-3xl text-maroon md:text-4xl">Our fragrance collection</h2>
+              <p className="mt-2 max-w-lg font-body text-sm leading-relaxed text-ink/60">A closer look at the bottles, rituals and craft behind every ItraWala fragrance.</p>
             </div>
-            <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" className="font-body text-sm font-semibold text-maroon hover:underline">Instagram</a>
+            <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-2 border-b border-maroon/40 pb-1 font-body text-sm font-semibold text-maroon transition hover:border-maroon">Follow our journey <span aria-hidden="true">↗</span></a>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg", "image6.jpg", "image7.jpg", "image8.jpg", "image10.jpg", "image11.jpg", "image12.webp", "image13.webp"].map((image, index) => (
-              <div key={image} className={`relative overflow-hidden rounded-xl bg-paper ${index === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}>
-                <Image src={`/images/${image}`} alt={`ItraWala fragrance collection ${index + 1}`} fill sizes="(min-width: 768px) 200px, 50vw" className="object-cover transition duration-500 hover:scale-105" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+            {["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg", "image6.jpg", "image7.jpg"].map((image, index) => (
+              <div key={image} className={`group relative overflow-hidden rounded-2xl bg-paper ${index === 0 ? "col-span-2 row-span-2 aspect-square sm:col-span-2 sm:row-span-2" : index === 5 ? "col-span-2 aspect-[2/1] sm:col-span-2" : "aspect-square"}`}>
+                <Image src={`/images/${image}`} alt={`ItraWala fragrance collection ${index + 1}`} fill sizes="(min-width: 768px) 280px, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-maroon/65 via-transparent to-transparent opacity-70 transition duration-500 group-hover:opacity-100" />
+                <p className="absolute bottom-3 left-3 font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-ivory/90 sm:bottom-4 sm:left-4">Collection {String(index + 1).padStart(2, "0")}</p>
               </div>
             ))}
           </div>
