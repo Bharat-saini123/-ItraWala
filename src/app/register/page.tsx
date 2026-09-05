@@ -13,14 +13,29 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-    setLoading(true);
+
     const formData = new FormData(e.currentTarget);
+    const email = String(formData.get("email") ?? "").trim().toLowerCase();
+    const password = String(formData.get("password") ?? "");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    setLoading(true);
     const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: String(formData.get("email")),
-        password: String(formData.get("password")),
+        email,
+        password,
         fullName: String(formData.get("name")),
         phone: String(formData.get("phone")),
         city: String(formData.get("city")),
@@ -86,7 +101,7 @@ export default function RegisterPage() {
             name="password"
             type="password"
             required
-            minLength={6}
+            minLength={8}
             className="mt-1.5 w-full rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
           />
         </label>

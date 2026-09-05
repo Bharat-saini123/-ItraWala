@@ -19,9 +19,13 @@ export async function POST(request: NextRequest) {
     const password = String(body.password ?? "");
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email) || password.length < 8 || password.length > 128) {
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
+    }
+
+    if (password.length < 8 || password.length > 128) {
       return NextResponse.json(
-        { error: "Enter a valid email and a password of at least 6 characters." },
+        { error: "Password must be at least 8 characters long." },
         { status: 400 },
       );
     }
