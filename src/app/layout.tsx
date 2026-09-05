@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   title: "तोरणद्वार ItraWala — Traditional Attars, Oudh & Bakhoor",
   description:
     "Shop pure attars, oudh, eau de parfum, bakhoor and gift sets from ItraWala — traditional Indian perfumery, delivered to your door.",
+  icons: {
+    icon: "/images/logo.jpg",
+    shortcut: "/images/logo.jpg",
+    apple: "/images/logo.jpg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
