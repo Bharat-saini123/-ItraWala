@@ -132,7 +132,7 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <div className="grid gap-px overflow-hidden rounded-2xl border border-gold/20 bg-gold/20 text-center sm:grid-cols-3">
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-gold/20 bg-gold/20 text-center sm:grid-cols-3">
           {[
             { n: "1000+", label: "Years of Kannauj perfumery heritage" },
             { n: "40+", label: "Attars, oudhs & blends in our collection" },
