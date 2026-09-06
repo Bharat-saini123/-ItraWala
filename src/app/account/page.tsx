@@ -14,6 +14,8 @@ export default async function AccountPage() {
 
   if (!user) redirect("/login?next=/account");
 
+  const orderSteps = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED"] as const;
+
   const [profile, orders] = await Promise.all([
     prisma.profile.findUnique({ where: { id: user.id } }),
     prisma.order.findMany({
@@ -92,6 +94,49 @@ export default async function AccountPage() {
                 <p className="mt-3 font-body text-sm font-semibold text-maroon">
                   {formatINR(Number(order.total))}
                 </p>
+                {order.status === "CANCELLED" ? (
+                  <div className="mt-5 rounded-lg border border-terracotta/30 bg-terracotta/10 px-3 py-2 font-body text-xs font-semibold uppercase tracking-wide text-terracotta">
+                    Order cancelled
+                  </div>
+                ) : (
+                  <div className="mt-6 px-1">
+                    {(() => {
+                      const currentStepIndex = orderSteps.indexOf(order.status as (typeof orderSteps)[number]);
+                      return (
+                    <div className="relative">
+                      <div className="absolute left-2 right-2 top-2 h-1 rounded-full bg-gold/20" />
+                      <div
+                        className="absolute left-2 top-2 h-1 rounded-full bg-gold transition-all duration-500"
+                        style={{
+                          width: `${(orderSteps.indexOf(order.status) / (orderSteps.length - 1)) * 100}%`,
+                        }}
+                      />
+                      <div className="relative flex justify-between">
+                        {orderSteps.map((step, index) => {
+                          const isComplete = index <= currentStepIndex;
+                          return (
+                            <div key={step} className="flex flex-col items-center gap-2">
+                              <span
+                                className={`h-5 w-5 rounded-full border-4 border-paper transition-colors duration-500 ${
+                                  isComplete ? "bg-gold" : "bg-ivory"
+                                }`}
+                              />
+                              <span
+                                className={`font-body text-[10px] font-semibold uppercase tracking-wide ${
+                                  isComplete ? "text-maroon" : "text-ink/40"
+                                }`}
+                              >
+                                {step === "PENDING" ? "Placed" : step.charAt(0) + step.slice(1).toLowerCase()}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                      );
+                    })()}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
