@@ -1,27 +1,39 @@
 import { prisma } from "@/lib/prisma";
 import { sendContactFormEmail } from "@/lib/email";
-import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
+import {
+  checkRateLimit,
+  getClientIp,
+  hasJsonRequestLimitExceeded,
+  isJsonRequest,
+  rateLimitResponse,
+} from "@/lib/security";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const rateLimit = checkRateLimit(`contact:${getClientIp(request)}`, 5, 10 * 60 * 1000);
     if (!rateLimit.allowed) return rateLimitResponse(rateLimit.retryAfter);
+    if (!isJsonRequest(request) || hasJsonRequestLimitExceeded(request, 16 * 1024)) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
 
-    const body = await request.json();
-    const { name, email, phone, subject, message } = body;
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+    const values = [body.name, body.email, body.phone, body.subject, body.message];
 
     // Validation
-    if (!name || !email || !phone || !subject || !message) {
+    if (values.some((value) => typeof value !== "string" || !value.trim())) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 },
       );
     }
 
-    if ([name, email, phone, subject, message].some((value) => typeof value !== "string")) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    }
+    const [name, email, phone, subject, message] = values as string[];
 
     const trimmedName = name.trim();
     const trimmedEmail = email.trim().toLowerCase();

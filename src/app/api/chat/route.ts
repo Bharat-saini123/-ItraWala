@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkRateLimit, getClientIp, rateLimitResponse } from "@/lib/security";
+import {
+  checkRateLimit,
+  getClientIp,
+  hasJsonRequestLimitExceeded,
+  isJsonRequest,
+  rateLimitResponse,
+} from "@/lib/security";
 import { prisma } from "@/lib/prisma";
 
 // Groq API — https://console.groq.com
@@ -32,6 +38,9 @@ export async function POST(req: NextRequest) {
   try {
     const rateLimit = checkRateLimit(`chat:${getClientIp(req)}`, 20, 10 * 60 * 1000);
     if (!rateLimit.allowed) return rateLimitResponse(rateLimit.retryAfter);
+    if (!isJsonRequest(req) || hasJsonRequestLimitExceeded(req, 256 * 1024)) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
 
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
@@ -44,7 +53,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
+    let body: { messages?: unknown };
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
     const { messages } = body;
 
     if (!Array.isArray(messages) || messages.length === 0 || messages.length > 50) {

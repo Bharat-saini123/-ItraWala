@@ -14,6 +14,9 @@ export default function ContactPage() {
           Questions about a fragrance, a bulk or gifting order, or anything
           else — reach out and our team will get back to you within a day.
         </p>
+        <p className="mt-4 font-body text-sm font-semibold text-maroon">
+          Open 9 AM - 9 PM, Mon-Sun
+        </p>
       </div>
 
       <ContactForm adminEmail={process.env.ADMIN_EMAIL ?? ""} />

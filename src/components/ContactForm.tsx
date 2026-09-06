@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useState } from "react";
 
 export default function ContactForm({ adminEmail }: { adminEmail: string }) {
@@ -76,6 +76,11 @@ export default function ContactForm({ adminEmail }: { adminEmail: string }) {
               Opposite Polytechnic, Seka, Narnaul, Haryana - 123001
             </a>
           }
+        />
+        <ContactRow
+          icon={<Clock size={18} />}
+          label="Store Hours"
+          value="Open 9 AM - 9 PM, Mon-Sun"
         />
       </div>
 
