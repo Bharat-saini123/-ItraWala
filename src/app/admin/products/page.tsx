@@ -6,26 +6,36 @@ import { formatINR } from "@/lib/utils";
 import { StockEditor } from "@/components/admin/StockEditor";
 import { VisibilityToggle } from "@/components/admin/VisibilityToggle";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
+import type { Prisma } from "@prisma/client";
 
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: { filter?: string };
+  searchParams: { filter?: string; q?: string; category?: string };
 }) {
   const filter = searchParams.filter;
-  const where =
-    filter === "hidden"
-      ? { isVisible: false }
-      : filter === "low-stock"
-        ? { stock: { lte: 5 } }
-        : undefined;
+  const query = searchParams.q?.trim() ?? "";
+  const where: Prisma.ProductWhereInput = {
+    ...(filter === "hidden" ? { isVisible: false } : {}),
+    ...(filter === "low-stock" ? { stock: { lte: 5 } } : {}),
+    ...(searchParams.category ? { categoryId: searchParams.category } : {}),
+    ...(query
+      ? {
+          OR: [
+            { name: { contains: query, mode: "insensitive" } },
+            { sku: { contains: query, mode: "insensitive" } },
+          ],
+        }
+      : {}),
+  };
 
   const products = await prisma.product.findMany({
-    where,
+    where: Object.keys(where).length > 0 ? where : undefined,
     include: { category: true },
     orderBy: { createdAt: "desc" },
   });
 
+  const categories = await prisma.category.findMany({ orderBy: { name: "asc" } });
   const heading =
     filter === "hidden"
       ? "Hidden Products"
@@ -59,6 +69,34 @@ export default async function AdminProductsPage({
           </Link>
         </div>
       </div>
+
+      <form className="mt-6 flex flex-col gap-3 rounded-2xl border border-gold/20 bg-paper p-4 sm:flex-row" method="get">
+        {filter && <input type="hidden" name="filter" value={filter} />}
+        <input
+          name="q"
+          defaultValue={query}
+          placeholder="Search product name or SKU..."
+          className="min-w-0 flex-1 rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+        />
+        <select
+          name="category"
+          defaultValue={searchParams.category ?? ""}
+          className="rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+        >
+          <option value="">All categories</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>{category.name}</option>
+          ))}
+        </select>
+        <button type="submit" className="rounded-lg bg-maroon px-5 py-2 font-body text-sm font-semibold text-ivory hover:bg-maroon-dark">
+          Search
+        </button>
+        {(query || searchParams.category) && (
+          <Link href={filter ? `/admin/products?filter=${filter}` : "/admin/products"} className="rounded-lg border border-maroon/30 px-5 py-2 text-center font-body text-sm font-semibold text-maroon hover:bg-maroon/5">
+            Clear
+          </Link>
+        )}
+      </form>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-gold/20 bg-paper">
         <table className="w-full text-left">

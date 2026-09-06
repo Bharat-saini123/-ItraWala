@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatINR } from "@/lib/utils";
+import { OrderStatus, type Prisma } from "@prisma/client";
 
 const STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-gold/20 text-gold-dark",
@@ -13,11 +14,27 @@ const STATUS_STYLES: Record<string, string> = {
 export default async function AdminOrdersPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: { status?: string; q?: string };
 }) {
-  const status = searchParams.status;
+  const status = Object.values(OrderStatus).includes(searchParams.status as OrderStatus)
+    ? (searchParams.status as OrderStatus)
+    : undefined;
+  const query = searchParams.q?.trim() ?? "";
+  const where: Prisma.OrderWhereInput = {
+    ...(status ? { status: status as Prisma.OrderWhereInput["status"] } : {}),
+    ...(query
+      ? {
+          OR: [
+            { orderNumber: { contains: query, mode: "insensitive" } },
+            { customerName: { contains: query, mode: "insensitive" } },
+            { customerEmail: { contains: query, mode: "insensitive" } },
+            { customerPhone: { contains: query, mode: "insensitive" } },
+          ],
+        }
+      : {}),
+  };
   const orders = await prisma.order.findMany({
-    where: status === "PENDING" ? { status: "PENDING" } : undefined,
+    where: Object.keys(where).length > 0 ? where : undefined,
     orderBy: { createdAt: "desc" },
     include: { items: true },
   });
@@ -42,6 +59,33 @@ export default async function AdminOrdersPage({
           </Link>
         )}
       </div>
+
+      <form className="mt-6 flex flex-col gap-3 rounded-2xl border border-gold/20 bg-paper p-4 sm:flex-row" method="get">
+        <input
+          name="q"
+          defaultValue={query}
+          placeholder="Search order number, customer, phone..."
+          className="min-w-0 flex-1 rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+        />
+        <select
+          name="status"
+          defaultValue={status ?? ""}
+          className="rounded-lg border border-gold/30 bg-ivory px-3 py-2 font-body text-sm text-ink focus-ring"
+        >
+          <option value="">All statuses</option>
+          {Object.keys(STATUS_STYLES).map((orderStatus) => (
+            <option key={orderStatus} value={orderStatus}>{orderStatus}</option>
+          ))}
+        </select>
+        <button type="submit" className="rounded-lg bg-maroon px-5 py-2 font-body text-sm font-semibold text-ivory hover:bg-maroon-dark">
+          Search
+        </button>
+        {(query || status) && (
+          <Link href="/admin/orders" className="rounded-lg border border-maroon/30 px-5 py-2 text-center font-body text-sm font-semibold text-maroon hover:bg-maroon/5">
+            Clear
+          </Link>
+        )}
+      </form>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-gold/20 bg-paper">
         <table className="w-full text-left">
