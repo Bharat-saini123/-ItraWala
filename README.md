@@ -1,4 +1,4 @@
-# तोरणद्वार तोरणद्वार Itra Wala
+# तोरणद्वार Itra Wala
 
 A full e-commerce site for a traditional Indian attar / perfume brand, built with
 **Next.js 14 (App Router) + TypeScript + Prisma + Supabase**.

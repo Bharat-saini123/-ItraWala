@@ -19,7 +19,7 @@ export async function Footer({ adminEmail }: { adminEmail: string }) {
           <div>
             <Image
               src="/images/logo.jpg"
-              alt="तोरणद्वार तोरणद्वार Itra Wala"
+              alt="तोरणद्वार Itra Wala"
               width={200}
               height={80}
               className="mb-4 h-16 w-[200px] object-contain object-left mix-blend-screen"
@@ -86,7 +86,7 @@ export async function Footer({ adminEmail }: { adminEmail: string }) {
         <ArchDivider className="my-10 opacity-60" />
 
         <div className="flex flex-col items-center justify-between gap-3 font-body text-xs text-ivory/60 md:flex-row">
-          <p>&copy; {new Date().getFullYear()} तोरणद्वार तोरणद्वार Itra Wala. Owner: Rajneesh Saini.</p>
+          <p>&copy; {new Date().getFullYear()} तोरणद्वार Itra Wala. Owner: Rajneesh Saini.</p>
           <div className="flex gap-5">
             <Link href="/privacy-policy" className="hover:text-gold-light">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gold-light">Terms of Service</Link>

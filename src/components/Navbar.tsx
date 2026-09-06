@@ -27,7 +27,7 @@ export function Navbar() {
         <Link href="/" className="focus-ring">
           <Image
             src="/images/logo.jpg"
-            alt="तोरणद्वार तोरणद्वार Itra Wala"
+            alt="तोरणद्वार Itra Wala"
             width={180}
             height={72}
             className="h-12 w-[150px] object-contain object-left mix-blend-screen md:h-14 md:w-[200px]"

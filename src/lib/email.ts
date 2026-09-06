@@ -77,7 +77,7 @@ export async function sendContactFormEmail(contactData: ContactMessage) {
           <tr><td style="height:7px;background:#5c1a28;font-size:0;line-height:0;">&nbsp;</td></tr>
           <tr><td style="padding:28px 32px 22px;text-align:center;">
             <div style="color:#5c1a28;font-family:Georgia,serif;font-size:28px;font-weight:bold;letter-spacing:.02em;">तोरणद्वार Itra Wala</div>
-            <div style="margin-top:4px;color:#8f7233;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;">तोरणद्वार Itra Wala</div>
+            <div style="margin-top:4px;color:#8f7233;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;">TRADITIONAL FRAGRANCE</div>
           </td></tr>
           <tr><td style="padding:0 32px;"><div style="height:1px;background:#bf9b4f;opacity:.55;"></div></td></tr>
           <tr><td style="padding:34px 32px 10px;">
@@ -215,7 +215,7 @@ async function sendOrderEmail(order: OrderEmail, subject: string, message: strin
           <tr><td style="height:7px;background:#5c1a28;font-size:0;line-height:0;">&nbsp;</td></tr>
           <tr><td style="padding:28px 32px 22px;text-align:center;">
             <div style="color:#5c1a28;font-family:Georgia,serif;font-size:28px;font-weight:bold;letter-spacing:.02em;">तोरणद्वार Itra Wala</div>
-            <div style="margin-top:4px;color:#8f7233;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;">तोरणद्वार Itra Wala</div>
+            <div style="margin-top:4px;color:#8f7233;font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;">TRADITIONAL FRAGRANCE</div>
           </td></tr>
           <tr><td style="padding:0 32px;"><div style="height:1px;background:#bf9b4f;opacity:.55;"></div></td></tr>
           <tr><td style="padding:34px 32px 10px;">

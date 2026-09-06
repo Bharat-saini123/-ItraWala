@@ -53,7 +53,7 @@ export default async function HomePage() {
               <br /> the way it was meant to be.
             </h1>
             <p className="mt-6 max-w-md font-body text-base leading-relaxed text-ink/70">
-              तोरणद्वार तोरणद्वार Itra Wala brings you pure attars, oudh and bakhoor —
+              तोरणद्वार Itra Wala brings you pure attars, oudh and bakhoor —
               hand-crafted using centuries-old techniques from Kannauj, the
               perfume capital of India.
             </p>
@@ -76,7 +76,7 @@ export default async function HomePage() {
             <div className="arch-frame relative mx-auto aspect-[3/4] w-full max-w-md">
               <Image
                 src="/images/shop.jpg"
-                alt="तोरणद्वार तोरणद्वार Itra Wala shop filled with attar bottles"
+                alt="तोरणद्वार Itra Wala shop filled with attar bottles"
                 fill
                 sizes="(min-width: 768px) 420px, 90vw"
                 className="object-cover"
