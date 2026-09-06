@@ -1,6 +1,6 @@
 import ContactForm from "@/components/ContactForm";
 
-export const metadata = { title: "Contact Us — ItraWala" };
+export const metadata = { title: "Contact Us — तोरणद्वार Itra Wala" };
 
 export default function ContactPage() {
   return (

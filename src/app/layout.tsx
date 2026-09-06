@@ -19,9 +19,9 @@ const body = Karla({
 });
 
 export const metadata: Metadata = {
-  title: "तोरणद्वार ItraWala — Traditional Attars, Oudh & Bakhoor",
+  title: "तोरणद्वार तोरणद्वार Itra Wala — Traditional Attars, Oudh & Bakhoor",
   description:
-    "Shop pure attars, oudh, eau de parfum, bakhoor and gift sets from ItraWala — traditional Indian perfumery, delivered to your door.",
+    "Shop pure attars, oudh, eau de parfum, bakhoor and gift sets from तोरणद्वार Itra Wala — traditional Indian perfumery, delivered to your door.",
   icons: {
     icon: "/images/logo.jpg",
     shortcut: "/images/logo.jpg",

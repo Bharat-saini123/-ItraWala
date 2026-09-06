@@ -1,6 +1,6 @@
 import { LegalPage } from "@/components/LegalPage";
 
-export const metadata = { title: "Returns & Refunds — ItraWala" };
+export const metadata = { title: "Returns & Refunds — तोरणद्वार Itra Wala" };
 
 export default function ReturnsPage() {
   return <LegalPage eyebrow="Our return promise" title="Returns & Refunds" intro="Because fragrance products are personal-use items, we keep returns focused on products that arrive damaged, incorrect, or defective." sections={[

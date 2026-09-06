@@ -1,6 +1,6 @@
 import { LegalPage } from "@/components/LegalPage";
 
-export const metadata = { title: "Shipping Information — ItraWala" };
+export const metadata = { title: "Shipping Information — तोरणद्वार Itra Wala" };
 
 export default function ShippingPage() {
   return <LegalPage eyebrow="Delivered with care" title="Shipping Information" intro="Every bottle is packed carefully from our shop in Narnaul, Haryana and sent across India." sections={[

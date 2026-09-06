@@ -20,14 +20,14 @@ export function ChatBot({ adminEmail }: { adminEmail: string }) {
   const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
   const whatsappNumber = ownerPhone.replace(/\D/g, "");
   const whatsappLink = whatsappNumber
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello, ItraWala ke products ke baare mein jaankari chahiye.")}`
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello, तोरणद्वार Itra Wala ke products ke baare mein jaankari chahiye.")}`
     : "https://wa.me/";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content:
-        "Namaste! 🌸 Main ItraWala ka AI assistant hoon. Attars, oudh, ya kisi bhi product ke baare mein poochhein. How can I help you today?",
+        "Namaste! 🌸 Main तोरणद्वार Itra Wala ka AI assistant hoon. Attars, oudh, ya kisi bhi product ke baare mein poochhein. How can I help you today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -134,7 +134,7 @@ export function ChatBot({ adminEmail }: { adminEmail: string }) {
             </div>
             <div>
               <p className="font-display text-sm font-semibold text-ivory">
-                ItraWala Assistant
+                तोरणद्वार Itra Wala Assistant
               </p>
             </div>
             <button

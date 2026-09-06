@@ -163,7 +163,7 @@ async function main() {
   console.log("Seeding customer reviews...");
   const reviews = [
     { name: "Amit Sharma", rating: 5, comment: "Mysore Chandan Attar ki khushboo bahut shaant aur long-lasting hai. Packaging bhi bahut achhi thi." },
-    { name: "Neha Verma", rating: 5, comment: "Gulab-e-Kannauj ki natural fragrance dil jeet leti hai. ItraWala se dobara zaroor order karungi." },
+    { name: "Neha Verma", rating: 5, comment: "Gulab-e-Kannauj ki natural fragrance dil jeet leti hai. तोरणद्वार Itra Wala se dobara zaroor order karungi." },
     { name: "Rohit Yadav", rating: 4, comment: "Oudh Al Sharq ki khushboo rich aur premium hai. Delivery bhi time par mil gayi." },
     { name: "Pooja Saini", rating: 5, comment: "Gift set sundar tha aur fragrances ka selection bahut accha laga. Family ko bhi pasand aaya." },
     { name: "Vikas Gupta", rating: 5, comment: "Mitti Attar mein pehli baarish wali asli khushboo milti hai. Quality ke liye shukriya." },

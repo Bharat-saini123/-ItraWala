@@ -1,5 +1,5 @@
 -- ============================================================
--- ItraWala (तोरणद्वार) — Supabase project setup
+-- तोरणद्वार Itra Wala (तोरणद्वार) — Supabase project setup
 -- Run this in Supabase Dashboard > SQL Editor AFTER you have run
 -- `npx prisma migrate dev` at least once (so the tables below exist).
 -- ============================================================

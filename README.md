@@ -1,4 +1,4 @@
-# तोरणद्वार ItraWala
+# तोरणद्वार तोरणद्वार Itra Wala
 
 A full e-commerce site for a traditional Indian attar / perfume brand, built with
 **Next.js 14 (App Router) + TypeScript + Prisma + Supabase**.
@@ -61,7 +61,7 @@ isn't empty on first run. Delete or edit them any time from the admin panel.
 ## 5. Make yourself an admin
 
 1. Run the app (`npm run dev`) and sign up for an account at `/register`.
-2. Confirm your email (check your inbox — ItraWala sends the confirmation link
+2. Confirm your email (check your inbox — तोरणद्वार Itra Wala sends the confirmation link
   through Nodemailer).
 3. In **Supabase Dashboard → SQL Editor**, run:
 

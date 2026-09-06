@@ -73,7 +73,7 @@ export default function RegisterPage() {
   return (
     <div className="mx-auto flex max-w-md flex-col px-5 py-20 md:px-8">
       <p className="text-center font-body text-xs font-semibold uppercase tracking-[0.3em] text-gold-dark">
-        Join ItraWala
+        Join तोरणद्वार Itra Wala
       </p>
       <h1 className="mt-2 text-center font-display text-3xl text-maroon">Create Account</h1>
 
