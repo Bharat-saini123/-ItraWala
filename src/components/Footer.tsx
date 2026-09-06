@@ -1,11 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { ArchDivider } from "./ArchDivider";
+import { prisma } from "@/lib/prisma";
 
-export function Footer({ adminEmail }: { adminEmail: string }) {
+export async function Footer({ adminEmail }: { adminEmail: string }) {
   const ownerPhone = process.env.NEXT_PUBLIC_OWNER_PHONE ?? "";
   const ownerPhoneLink = ownerPhone.replace(/\D/g, "");
+  const categories = await prisma.category.findMany({
+    select: { name: true, slug: true },
+    orderBy: { name: "asc" },
+  });
   return (
     <footer className="mt-24 bg-maroon text-ivory">
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
@@ -30,9 +35,6 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
               <a href="https://www.facebook.com/neeraj.saini.397" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-ivory/70 hover:text-gold-light">
                 <Facebook size={19} />
               </a>
-              <a href="#" aria-label="YouTube" className="text-ivory/70 hover:text-gold-light">
-                <Youtube size={19} />
-              </a>
             </div>
           </div>
 
@@ -43,10 +45,13 @@ export function Footer({ adminEmail }: { adminEmail: string }) {
             </h3>
             <ul className="space-y-2 font-body text-sm text-ivory/75">
               <li><Link href="/shop" className="hover:text-gold-light">All Products</Link></li>
-              <li><Link href="/shop?category=pure-attars" className="hover:text-gold-light">Pure Attars</Link></li>
-              <li><Link href="/shop?category=eau-de-parfum" className="hover:text-gold-light">Eau De Parfum</Link></li>
-              <li><Link href="/shop?category=bakhoor-incense" className="hover:text-gold-light">Bakhoor &amp; Incense</Link></li>
-              <li><Link href="/shop?category=gift-sets" className="hover:text-gold-light">Gift Sets</Link></li>
+              {categories.map((category) => (
+                <li key={category.slug}>
+                  <Link href={`/shop?category=${category.slug}`} className="hover:text-gold-light">
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
