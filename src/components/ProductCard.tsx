@@ -10,7 +10,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
   return (
     <Link
       href={`/shop/${product.slug}`}
-      className="group block overflow-hidden rounded-2xl border border-gold/15 bg-paper shadow-sm transition hover:-translate-y-1 hover:shadow-soft focus-ring"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gold/15 bg-paper shadow-sm transition hover:-translate-y-1 hover:shadow-soft focus-ring"
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-ivory">
         <Image
@@ -31,13 +31,13 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           </span>
         )}
       </div>
-      <div className="p-4">
+      <div className="flex min-h-[112px] flex-1 flex-col p-4">
         {product.category && (
           <p className="mb-1 font-body text-[11px] uppercase tracking-widest text-gold-dark">
             {product.category.name}
           </p>
         )}
-        <h3 className="font-display text-lg text-ink">{product.name}</h3>
+        <h3 className="line-clamp-2 min-h-[3.5rem] font-display text-lg leading-tight text-ink">{product.name}</h3>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="font-body text-base font-semibold text-maroon">
             {formatINR(product.price)}

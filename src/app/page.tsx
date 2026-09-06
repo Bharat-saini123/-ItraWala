@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCarousel } from "@/components/ProductCarousel";
 import { ArchDivider, GatewayMark } from "@/components/ArchDivider";
 import { ReviewList } from "@/components/Reviews";
 import type { ProductDTO } from "@/types";
@@ -159,11 +159,7 @@ export default async function HomePage() {
                 View All →
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-              {featured.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+            <ProductCarousel products={featured} />
           </div>
         </section>
       )}
