@@ -5,6 +5,16 @@ import { ReviewForm, ReviewList } from "@/components/Reviews";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
+const COLLECTION_ITEMS = [
+  { image: "image1.jpg", label: "Gift Set · 5 Piece · 6ml" },
+  { image: "image2.jpg", label: "Gift Set · 5 Piece · 12ml" },
+  { image: "image3.jpg", label: "Gift Set · 10 Piece · 12ml" },
+  { image: "image4.jpg", label: "Gift Set · 25 Piece · 12ml" },
+  { image: "image5.jpg", label: "Gift Set · 30 Piece · 6ml" },
+  { image: "image6.jpg", label: "Car Diffuser" },
+  { image: "image7.jpg", label: "Premium Ittar" },
+];
+
 export const metadata = { title: "Our Story — ItraWala" };
 
 export default async function AboutPage() {
@@ -156,14 +166,20 @@ export default async function AboutPage() {
             </div>
             <a href="https://www.instagram.com/torandwar_itrawala/" target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-2 border-b border-maroon/40 pb-1 font-body text-sm font-semibold text-maroon transition hover:border-maroon">Follow our journey <span aria-hidden="true">↗</span></a>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-            {["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg", "image6.jpg", "image7.jpg"].map((image, index) => (
-              <div key={image} className={`group relative overflow-hidden rounded-2xl bg-paper ${index === 0 ? "col-span-2 row-span-2 aspect-square sm:col-span-2 sm:row-span-2" : index === 5 ? "col-span-2 aspect-[2/1] sm:col-span-2" : "aspect-square"}`}>
-                <Image src={`/images/${image}`} alt={`ItraWala fragrance collection ${index + 1}`} fill sizes="(min-width: 768px) 280px, 50vw" className="object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon/65 via-transparent to-transparent opacity-70 transition duration-500 group-hover:opacity-100" />
-                <p className="absolute bottom-3 left-3 font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-ivory/90 sm:bottom-4 sm:left-4">Collection {String(index + 1).padStart(2, "0")}</p>
-              </div>
-            ))}
+          <div className="marquee-gallery" aria-label="Moving fragrance collection gallery">
+            <div className="marquee-track">
+              {[0, 1].map((copy) => (
+                <div key={copy} className="marquee-group" aria-hidden={copy === 1}>
+                  {COLLECTION_ITEMS.map((item) => (
+                    <div key={`${copy}-${item.image}`} className="marquee-card group relative overflow-hidden rounded-2xl bg-paper">
+                      <Image src={`/images/${item.image}`} alt={copy === 0 ? `ItraWala ${item.label}` : ""} fill sizes="(min-width: 768px) 260px, 72vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-maroon/65 via-transparent to-transparent opacity-70 transition duration-500 group-hover:opacity-100" />
+                      <p className="absolute bottom-3 left-3 max-w-[85%] font-body text-[10px] font-semibold uppercase tracking-[0.12em] text-ivory/90 sm:bottom-4 sm:left-4">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
